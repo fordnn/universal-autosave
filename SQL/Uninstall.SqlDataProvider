@@ -1,0 +1,244 @@
+﻿/*	forDNN UniversalAutosave Configurations	*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetByTabID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetByTabID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetDistinctValues') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetDistinctValues
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration
+GO
+
+
+
+/*	forDNN UniversalAutosave Configurations	Permissions */
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_DeleteByConfigurationID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_DeleteByConfigurationID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetByConfigurationID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetByConfigurationID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission
+GO
+
+
+/*		Configuration Controls		*/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetByFilter') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetByFilter
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetDistinctValues') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetDistinctValues
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+GO
+
+
+/*		Universal Autosave Anonymous Users		*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetByUserGUID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetByUserGUID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetDistinctValues') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetDistinctValues
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous
+GO
+
+
+/*		Universal Autosave Urls		*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetByUrl') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetByUrl
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url
+GO
+
+
+/*		Universal Autosave Values		*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetByFilter') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetByFilter
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetLastValue') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetLastValue
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_UpdateTrackChanges') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_UpdateTrackChanges
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_CloseSession') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_CloseSession
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+GO
+
+
+
+/*		Universal Autosave Events		*/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetByFilter') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetByFilter
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event
+GO
+

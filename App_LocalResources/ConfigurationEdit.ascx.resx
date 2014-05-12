@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AllowUsage.Permission" xml:space="preserve">
+    <value>Allow Usage</value>
+  </data>
+  <data name="AllowUsage.Text" xml:space="preserve">
+    <value>Allow Usage</value>
+  </data>
+  <data name="AutosaveIcon.Help" xml:space="preserve">
+    <value>Display autosave icon at the top right corner of the each control function has been applied to.</value>
+  </data>
+  <data name="AutosaveIcon.Text" xml:space="preserve">
+    <value>Autosave icon</value>
+  </data>
+  <data name="AutosaveLocation-0.Text" xml:space="preserve">
+    <value>Cookie</value>
+  </data>
+  <data name="AutosaveLocation-1.Text" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="AutosaveLocation.Help" xml:space="preserve">
+    <value>Autosave location - Cookie/Server.</value>
+  </data>
+  <data name="AutosaveLocation.Text" xml:space="preserve">
+    <value>Autosave location:</value>
+  </data>
+  <data name="AutosavePeriod.Help" xml:space="preserve">
+    <value>Autosave every X seconds (0 to disable timer autosave).</value>
+  </data>
+  <data name="AutosavePeriod.Text" xml:space="preserve">
+    <value>Autosave period (seconds):</value>
+  </data>
+  <data name="BasicSettings.Text" xml:space="preserve">
+    <value>Basic settings</value>
+  </data>
+  <data name="BlurAutosave.Help" xml:space="preserve">
+    <value>Autosave on focus lost (on blur).</value>
+  </data>
+  <data name="BlurAutosave.Text" xml:space="preserve">
+    <value>Autosave on focus lost:</value>
+  </data>
+  <data name="Controls.Text" xml:space="preserve">
+    <value>Controls list</value>
+  </data>
+  <data name="Description.Help" xml:space="preserve">
+    <value>Enter a description about your configuration here.</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="EnableAutosave.Help" xml:space="preserve">
+    <value>Enable/disable autosave.</value>
+  </data>
+  <data name="EnableAutosave.Text" xml:space="preserve">
+    <value>Autosave enabled:</value>
+  </data>
+  <data name="HistoryExpiry.Help" xml:space="preserve">
+    <value>History expiries in X days. 0 to keep history forever.</value>
+  </data>
+  <data name="HistoryExpiry.Text" xml:space="preserve">
+    <value>History expiries in, days:</value>
+  </data>
+  <data name="HistoryLength.Help" xml:space="preserve">
+    <value>Autosave history length (0 for unlimited history).</value>
+  </data>
+  <data name="HistoryLength.Text" xml:space="preserve">
+    <value>Autosave history length:</value>
+  </data>
+  <data name="InvalidAutosavePeriod.Text" xml:space="preserve">
+    <value>Invalid autosave period (0-86400)</value>
+  </data>
+  <data name="InvalidHistoryExpiry.Text" xml:space="preserve">
+    <value>Invalid history expiry (0-365)</value>
+  </data>
+  <data name="InvalidHistoryLength.Text" xml:space="preserve">
+    <value>Invalid history length (0-9999)</value>
+  </data>
+  <data name="Pages.Text" xml:space="preserve">
+    <value>Page to use on</value>
+  </data>
+  <data name="PagesTitle.Help" xml:space="preserve">
+    <value>Please select page you want to use Universal Autosave on.</value>
+  </data>
+  <data name="PagesTitle.Text" xml:space="preserve">
+    <value>Please select page:</value>
+  </data>
+  <data name="Permissions.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="QuickSearch.Help" xml:space="preserve">
+    <value>Pages quick search.</value>
+  </data>
+  <data name="QuickSearch.Text" xml:space="preserve">
+    <value>Quick search:</value>
+  </data>
+  <data name="RequiredAutosavePeriod.Text" xml:space="preserve">
+    <value>Autosave period required</value>
+  </data>
+  <data name="RequiredHistoryExpiry.Text" xml:space="preserve">
+    <value>History expiry required</value>
+  </data>
+  <data name="RequiredHistoryLength.Text" xml:space="preserve">
+    <value>History length required</value>
+  </data>
+  <data name="RequiredPage.Text" xml:space="preserve">
+    <value>Please select page you want to use Autosave functionality on!</value>
+  </data>
+  <data name="RequiredTitle.Text" xml:space="preserve">
+    <value>Title required</value>
+  </data>
+  <data name="SavedValues.Text" xml:space="preserve">
+    <value>Manage saved values</value>
+  </data>
+  <data name="SaveFirst.Text" xml:space="preserve">
+    <value>To manage controls, events and values history, please update configuration first!</value>
+  </data>
+  <data name="Title.Help" xml:space="preserve">
+    <value>This is name of your configuration.</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="AddControlsWizard.Text" xml:space="preserve">
+    <value>Add controls Wizard</value>
+  </data>
+  <data name="ControlsGrid.Text" xml:space="preserve">
+    <value>List of controls Autosave will be applied to</value>
+  </data>
+  <data name="QuickAddSelector.Help" xml:space="preserve">
+    <value>You can quicly add any custom selector here.</value>
+  </data>
+  <data name="QuickAddSelector.Text" xml:space="preserve">
+    <value>Quick add selector:</value>
+  </data>
+  <data name="QuickAddSelectorButton.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="RequiredQuickAddSelector.Text" xml:space="preserve">
+    <value>Required quick add selector</value>
+  </data>
+  <data name="Selector.Text" xml:space="preserve">
+    <value>Selector</value>
+  </data>
+  <data name="StartWizard.Text" xml:space="preserve">
+    <value>Start controls wizard</value>
+  </data>
+  <data name="Calendar.Text" xml:space="preserve">
+    <value>Calendar</value>
+  </data>
+  <data name="FilterBy.Text" xml:space="preserve">
+    <value>Filter By:</value>
+  </data>
+  <data name="FilterByControl.Help" xml:space="preserve">
+    <value>Filter by control</value>
+  </data>
+  <data name="FilterByControl.Text" xml:space="preserve">
+    <value>Control:</value>
+  </data>
+  <data name="FilterByUser.Help" xml:space="preserve">
+    <value>Filter by user</value>
+  </data>
+  <data name="FilterByUser.Text" xml:space="preserve">
+    <value>User:</value>
+  </data>
+  <data name="PeriodFrom.Help" xml:space="preserve">
+    <value>Period from</value>
+  </data>
+  <data name="PeriodFrom.Text" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="PeriodTo.Help" xml:space="preserve">
+    <value>Period to</value>
+  </data>
+  <data name="PeriodTo.Text" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="RefreshValues.Text" xml:space="preserve">
+    <value>Refresh Values</value>
+  </data>
+  <data name="Enabled.Header" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="RestoreIfEmpty.Header" xml:space="preserve">
+    <value>Restore If Empty</value>
+  </data>
+  <data name="RestoreOnLoad.Header" xml:space="preserve">
+    <value>Restore On Load</value>
+  </data>
+  <data name="ShowCannedOnly.Header" xml:space="preserve">
+    <value>Show canned only</value>
+  </data>
+  <data name="UrlIndependent.Help" xml:space="preserve">
+    <value>When checked, then history of changes will be independent on the URL and params passed in the URL. It will be dependent on the Page (TabID) and Control only.</value>
+  </data>
+  <data name="UrlIndependent.Text" xml:space="preserve">
+    <value>URL-independent</value>
+  </data>
+  <data name="Canned.Header" xml:space="preserve">
+    <value>Canned value</value>
+  </data>
+  <data name="NoValuesFound.Text" xml:space="preserve">
+    <value>No values found</value>
+  </data>
+  <data name="QuickSearchValue.Text" xml:space="preserve">
+    <value>Values Quick Search</value>
+  </data>
+  <data name="Events.Help" xml:space="preserve">
+    <value>Close autosave session events</value>
+  </data>
+  <data name="Events.Text" xml:space="preserve">
+    <value>Close session events</value>
+  </data>
+  <data name="EventsGrid.Help" xml:space="preserve">
+    <value>List of events</value>
+  </data>
+  <data name="EventsGrid.Text" xml:space="preserve">
+    <value>List of events</value>
+  </data>
+  <data name="EventsWizard.Help" xml:space="preserve">
+    <value>Add Events Wizard</value>
+  </data>
+  <data name="EventsWizard.Text" xml:space="preserve">
+    <value>Add events wizard</value>
+  </data>
+  <data name="QuickAddEventSelector.Help" xml:space="preserve">
+    <value>Quick add event selector</value>
+  </data>
+  <data name="QuickAddEventSelector.Text" xml:space="preserve">
+    <value>Quick add event selector</value>
+  </data>
+  <data name="QuickAddEventSelectorButton.Help" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="QuickAddEventSelectorButton.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="RequiredQuickAddEventSelector.Help" xml:space="preserve">
+    <value>Required quick add events selector</value>
+  </data>
+  <data name="RequiredQuickAddEventSelector.Text" xml:space="preserve">
+    <value>Required quick add events selector</value>
+  </data>
+  <data name="StartEventWizard.Help" xml:space="preserve">
+    <value>Start events wizard</value>
+  </data>
+  <data name="StartEventWizard.Text" xml:space="preserve">
+    <value>Start events wizard</value>
+  </data>
+  <data name="EventName.Header" xml:space="preserve">
+    <value>Event name</value>
+  </data>
+  <data name="cmdUpdateClose.Text" xml:space="preserve">
+    <value>Update &amp; Close</value>
+  </data>
+</root>

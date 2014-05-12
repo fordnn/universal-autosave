@@ -1,0 +1,25 @@
+﻿.inlineBlock
+{
+	display: inline-block;
+}
+#tbQuickSearch
+{
+	width: 150px;
+}
+.searchOk
+{
+	background-color: Yellow;
+}
+.calendarTextBox
+{
+	min-width: 75px !important;
+	width: 75px !important;
+}
+.filterBox
+{
+	width: 250px !important;
+}
+.dnnCenter
+{
+	text-align: center;
+}

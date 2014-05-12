@@ -1,0 +1,1563 @@
+﻿/*	forDNN UniversalAutosave Configurations	*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetByTabID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetByTabID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetDistinctValues') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetDistinctValues
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration
+GO
+
+
+CREATE TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration (
+	[ConfigurationID]	[int]	IDENTITY (1, 1)	NOT NULL,
+	[Title]				[nvarchar]	(100) 	NOT NULL,
+	[Description]		[nvarchar]	(500) 	NOT NULL,
+	[TabID]				[int]	 	NOT NULL,
+	[AutosaveEnabled]	[bit]	 	NOT NULL,
+	[AutosaveIcon]		[bit]	 	NOT NULL,
+	[AutosaveOnBlur]	[bit]	 	NOT NULL,
+	[AutosavePeriod]	[int]	 	NOT NULL,
+	[HistoryLength]		[int]	 	NOT NULL,
+	[HistoryExpiry]		[int]	 	NOT NULL,
+	[AutosaveLocation]	[int]	 	NOT NULL,
+	[UrlIndependent]	[bit]	 	NOT NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration WITH NOCHECK ADD
+CONSTRAINT [PK_forDNN_UniversalAutosave_ConfigurationID] PRIMARY KEY CLUSTERED
+(
+	[ConfigurationID]
+) ON [PRIMARY]
+GO
+
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Add
+	@Title			[nvarchar]	(100),
+	@Description	[nvarchar]	(500),
+	@TabID			[int],
+	@AutosaveEnabled	[bit],
+	@AutosaveIcon		[bit],
+	@AutosaveOnBlur		[bit],
+	@AutosavePeriod		[int],
+	@HistoryLength		[int],
+	@HistoryExpiry		[int],
+	@AutosaveLocation	[int],
+	@UrlIndependent		[bit]
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration
+	VALUES (
+		@Title,
+		@Description,
+		@TabID,
+		@AutosaveEnabled,
+		@AutosaveIcon,
+		@AutosaveOnBlur,
+		@AutosavePeriod,
+		@HistoryLength,
+		@HistoryExpiry,
+		@AutosaveLocation,
+		@UrlIndependent
+	);
+	SELECT SCOPE_IDENTITY();
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Update
+	@ConfigurationID	[int],
+	@Title				[nvarchar]	(100),
+	@Description		[nvarchar]	(500),
+	@TabID				[int],
+	@AutosaveEnabled	[bit],
+	@AutosaveIcon		[bit],
+	@AutosaveOnBlur		[bit],
+	@AutosavePeriod		[int],
+	@HistoryLength		[int],
+	@HistoryExpiry		[int],
+	@AutosaveLocation	[int],
+	@UrlIndependent		[bit]
+AS
+	UPDATE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration
+	SET
+		Title			= @Title,
+		Description		= @Description,
+		TabID			= @TabID,
+		AutosaveEnabled	= @AutosaveEnabled,
+		AutosaveIcon	= @AutosaveIcon,
+		AutosaveOnBlur	= @AutosaveOnBlur,
+		AutosavePeriod	= @AutosavePeriod,
+		HistoryLength	= @HistoryLength,
+		HistoryExpiry	= @HistoryExpiry,
+		AutosaveLocation= @AutosaveLocation,
+		UrlIndependent	= @UrlIndependent
+	WHERE	(ConfigurationID = @ConfigurationID);
+GO
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_Delete
+	@ConfigurationID int
+AS
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration
+	WHERE (ConfigurationID = @ConfigurationID);
+
+	/*delete all nested objects*/
+
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+	WHERE ControlID IN (SELECT ControlID FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control WHERE (ConfigurationID = @ConfigurationID));
+
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission
+	WHERE (ConfigurationID = @ConfigurationID);
+
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+	WHERE (ConfigurationID = @ConfigurationID);
+
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event
+	WHERE (ConfigurationID = @ConfigurationID);
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetByPrimaryKey
+	@ConfigurationID int
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration
+	WHERE (ConfigurationID = @ConfigurationID)
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetAllItems
+	@SortBy	nvarchar(100)
+AS
+	IF(@SortBy='')
+	BEGIN
+		SELECT *
+		FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration
+	END
+	ELSE
+	BEGIN
+		DECLARE @Query nvarchar(2000);
+		SET @Query =
+			'SELECT *
+			FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration
+			ORDER BY ' + @SortBy;
+		EXEC(@Query);
+	END
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetByTabID
+	@TabID	int
+AS
+	SELECT	*
+	FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration
+	WHERE	(TabID=@TabID)
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration_GetDistinctValues
+AS
+	SELECT	*
+	FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration
+	WHERE	(ConfigurationID IN
+				(
+					SELECT	DISTINCT c.ConfigurationID
+					FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value v
+							LEFT JOIN {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control c ON (v.ControlID=c.ControlID)
+							
+				)
+			)
+	ORDER BY Title
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+
+/*	forDNN UniversalAutosave Configurations	Permissions */
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_DeleteByConfigurationID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_DeleteByConfigurationID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetByConfigurationID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetByConfigurationID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission
+GO
+
+
+CREATE TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission (
+	[ConfigurationPermissionID]	[int]	IDENTITY (1, 1)	NOT NULL,
+	[ConfigurationID]			[int]	 	NOT NULL,
+	[RoleID]					[int]	 	NOT NULL,
+	[UserID]					[int]	 	NOT NULL,
+	[AllowAccess]				[bit]	 	NOT NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission WITH NOCHECK ADD
+CONSTRAINT [PK_forDNN_UniversalAutosave_ConfigurationPermissionID] PRIMARY KEY CLUSTERED
+(
+	[ConfigurationPermissionID]
+) ON [PRIMARY]
+GO
+
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Add
+	@ConfigurationID	[int],
+	@RoleID				[int],
+	@UserID				[int],
+	@AllowAccess		[bit]	
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission
+	VALUES (
+		@ConfigurationID,
+		@RoleID,
+		@UserID,
+		@AllowAccess);
+	SELECT SCOPE_IDENTITY();
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Update
+	@ConfigurationPermissionID	[int],
+	@ConfigurationID			[int],
+	@RoleID						[int],
+	@UserID						[int],
+	@AllowAccess				[bit]
+AS
+	UPDATE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission
+	SET
+		ConfigurationID	= @ConfigurationID,
+		RoleID			= @RoleID,
+		UserID			= @UserID,
+		AllowAccess		= @AllowAccess
+	WHERE	(ConfigurationPermissionID = @ConfigurationPermissionID);
+GO
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_Delete
+	@ConfigurationPermissionID int
+AS
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission
+	WHERE (ConfigurationPermissionID = @ConfigurationPermissionID);
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_DeleteByConfigurationID
+	@ConfigurationID int
+AS
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission
+	WHERE (ConfigurationID = @ConfigurationID);
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetByPrimaryKey
+	@ConfigurationPermissionID int
+AS
+	SELECT	cp.*,
+			NULL CreatedByUserID,
+			NULL CreatedOnDate,
+			NULL LastModifiedByUserID,
+			NULL LastModifiedOnDate,
+			NULL ModuleDefID,
+			NULL PermissionCode,
+			NULL PermissionID,
+			NULL PermissionKey,
+			NULL PermissionName,
+			NULL RoleName,
+			u.DisplayName DisplayName,
+			u.UserName Username
+	FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission cp
+			LEFT JOIN {databaseOwner}{objectQualifier}Users u ON (cp.UserID=u.UserID)
+	WHERE (cp.ConfigurationPermissionID = @ConfigurationPermissionID)
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetAllItems
+	@SortBy	nvarchar(100)
+AS
+	IF(@SortBy='')
+	BEGIN
+		SELECT	cp.*,
+				NULL CreatedByUserID,
+				NULL CreatedOnDate,
+				NULL LastModifiedByUserID,
+				NULL LastModifiedOnDate,
+				NULL ModuleDefID,
+				NULL PermissionCode,
+				NULL PermissionID,
+				NULL PermissionKey,
+				NULL PermissionName,
+				NULL RoleName,
+				u.DisplayName DisplayName,
+				u.UserName Username
+		FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission cp
+				LEFT JOIN {databaseOwner}{objectQualifier}Users u ON (cp.UserID=u.UserID)
+	END
+	ELSE
+	BEGIN
+		DECLARE @Query nvarchar(2000);
+		SET @Query =
+			'
+			SELECT	cp.*,
+					NULL CreatedByUserID,
+					NULL CreatedOnDate,
+					NULL LastModifiedByUserID,
+					NULL LastModifiedOnDate,
+					NULL ModuleDefID,
+					NULL PermissionCode,
+					NULL PermissionID,
+					NULL PermissionKey,
+					NULL PermissionName,
+					NULL RoleName,
+					u.DisplayName DisplayName,
+					u.UserName Username
+			FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission cp
+					LEFT JOIN {databaseOwner}{objectQualifier}Users u ON (cp.UserID=u.UserID)
+			ORDER BY ' + @SortBy;
+		EXEC(@Query);
+	END
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission_GetByConfigurationID
+	@ConfigurationID int
+AS
+	SELECT	cp.*,
+			NULL CreatedByUserID,
+			NULL CreatedOnDate,
+			NULL LastModifiedByUserID,
+			NULL LastModifiedOnDate,
+			NULL ModuleDefID,
+			NULL PermissionCode,
+			NULL PermissionID,
+			NULL PermissionKey,
+			NULL PermissionName,
+			r.RoleName RoleName,
+			u.DisplayName DisplayName,
+			u.UserName Username
+	FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_ConfigurationPermission cp
+			LEFT JOIN {databaseOwner}{objectQualifier}Users u ON (cp.UserID=u.UserID)
+			LEFT JOIN {databaseOwner}{objectQualifier}Roles r ON (cp.RoleID=r.RoleID)
+	WHERE (cp.ConfigurationID = @ConfigurationID)
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+
+/*		Configuration Controls		*/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetByFilter') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetByFilter
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetDistinctValues') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetDistinctValues
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+GO
+
+
+CREATE TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control (
+	[ControlID]			[int]	IDENTITY (1, 1)	NOT NULL,
+	[ConfigurationID]	[int]	 	NOT NULL,
+	[Selector]			[nvarchar]	(200) 	NOT NULL,
+	[Enabled]			[bit]		NOT NULL,
+	
+	[RestoreOnLoad]		[bit]	NOT NULL,
+	[RestoreIfEmpty]	[bit]	NOT NULL,
+	[ShowCannedOnly]	[bit]	NOT NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control WITH NOCHECK ADD
+CONSTRAINT [PK_forDNN_UniversalAutosave_ControlID] PRIMARY KEY CLUSTERED
+(
+	[ControlID]
+) ON [PRIMARY]
+GO
+
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Add
+	@ConfigurationID	[int],
+	@Selector			[nvarchar]	(200),
+	@Enabled			[bit],
+	@RestoreOnLoad		[bit],
+	@RestoreIfEmpty		[bit],
+	@ShowCannedOnly		[bit]
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+	VALUES (
+		@ConfigurationID,
+		@Selector,
+		@Enabled,
+		@RestoreOnLoad,
+		@RestoreIfEmpty,
+		@ShowCannedOnly);
+	SELECT SCOPE_IDENTITY();
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Update
+	@ControlID			[int],
+	@ConfigurationID	[int],
+	@Selector			[nvarchar]	(200),
+	@Enabled			[bit],
+	@RestoreOnLoad		[bit],
+	@RestoreIfEmpty		[bit],
+	@ShowCannedOnly		[bit]
+AS
+	UPDATE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+	SET
+		ConfigurationID	= @ConfigurationID,
+		Selector		= @Selector,
+		Enabled			= @Enabled,
+		RestoreOnLoad	= @RestoreOnLoad,
+		RestoreIfEmpty	= @RestoreIfEmpty,
+		ShowCannedOnly	= @ShowCannedOnly
+	WHERE	(ControlID = @ControlID);
+GO
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Delete
+	@ControlID int
+AS
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+	WHERE (ControlID = @ControlID);
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetByPrimaryKey
+	@ControlID int
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+	WHERE (ControlID = @ControlID)
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetAllItems
+	@SortBy	nvarchar(100)
+AS
+	IF(@SortBy='')
+	BEGIN
+		SELECT *
+		FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+	END
+	ELSE
+	BEGIN
+		DECLARE @Query nvarchar(2000);
+		SET @Query =
+			'SELECT *
+			FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+			ORDER BY ' + @SortBy;
+		EXEC(@Query);
+	END
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetByFilter
+	@ConfigurationID	[int],
+	@Selector			[nvarchar]	(200)
+AS
+	SELECT	*
+	FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+	WHERE	((@ConfigurationID=-1) OR (ConfigurationID = @ConfigurationID)) AND
+			((@Selector='') OR (Selector=@Selector))
+	ORDER BY	Selector
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_GetDistinctValues
+	@ConfigurationID	[int]
+AS
+	SELECT	*
+	FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+	WHERE	(ConfigurationID = @ConfigurationID) AND (ControlID IN
+				(
+					SELECT	DISTINCT ControlID
+					FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+				)
+			)
+	ORDER BY Selector
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+
+/*		Universal Autosave Anonymous Users		*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetByUserGUID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetByUserGUID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetDistinctValues') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetDistinctValues
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous
+GO
+
+
+CREATE TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous (
+	[AnonymousID]	[int]	IDENTITY (1, 1)	NOT NULL,
+	[UserGUID]		[uniqueidentifier]	 	NOT NULL,
+	[CreatedAt]		[datetime]	 	NOT NULL,
+	[IP]			[nvarchar]	(15) 	NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous WITH NOCHECK ADD
+CONSTRAINT [PK_forDNN_UniversalAutosave_AnonymousID] PRIMARY KEY CLUSTERED
+(
+	[AnonymousID]
+) ON [PRIMARY]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_forDNN_UniversalAutosave_Anonymous] ON {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous
+(
+	[UserGUID] ASC
+) ON [PRIMARY]
+GO
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Add
+	@UserGUID	[uniqueidentifier],
+	@CreatedAt	[datetime],
+	@IP			[nvarchar]	(15)
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous
+	VALUES (
+		@UserGUID,
+		@CreatedAt,
+		@IP);
+	SELECT SCOPE_IDENTITY();
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Update
+	@AnonymousID	[int],
+	@UserGUID		[uniqueidentifier],
+	@CreatedAt		[datetime],
+	@IP				[nvarchar]	(15)
+AS
+	UPDATE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous
+	SET
+		UserGUID	= @UserGUID,
+		CreatedAt	= @CreatedAt,
+		IP			= @IP
+	WHERE	(AnonymousID = @AnonymousID);
+GO
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_Delete
+	@AnonymousID int
+AS
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous
+	WHERE (AnonymousID = @AnonymousID);
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetByPrimaryKey
+	@AnonymousID int
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous
+	WHERE (AnonymousID = @AnonymousID)
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetByUserGUID
+	@UserGUID		[uniqueidentifier]
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous
+	WHERE (UserGUID = @UserGUID)
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetAllItems
+	@SortBy	nvarchar(100)
+AS
+	IF(@SortBy='')
+	BEGIN
+		SELECT *
+		FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous
+	END
+	ELSE
+	BEGIN
+		DECLARE @Query nvarchar(2000);
+		SET @Query =
+			'SELECT *
+			FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous
+			ORDER BY ' + @SortBy;
+		EXEC(@Query);
+	END
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous_GetDistinctValues
+AS
+	SELECT	DISTINCT
+			v.UserID *
+			CASE WHEN v.Anonymous=0 THEN 1 ELSE -1 END UserID,
+			CASE WHEN v.Anonymous=0 THEN u.DisplayName ELSE CAST(a.UserGUID AS nvarchar(40)) END UserName,
+			v.Anonymous Anonymous
+	FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value v
+			LEFT JOIN {databaseOwner}{objectQualifier}Users u ON (v.UserID=u.UserID)
+			LEFT JOIN {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Anonymous a ON (v.UserID=a.AnonymousID)
+	ORDER BY Anonymous ASC, UserName ASC
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+
+/*		Universal Autosave Urls		*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetByUrl') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetByUrl
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url
+GO
+
+
+CREATE TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url (
+	[UrlID]	[int]	IDENTITY (1, 1)	NOT NULL,
+	[Url]	[nvarchar]	(1000) 	NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url WITH NOCHECK ADD
+CONSTRAINT [PK_forDNN_UniversalAutosave_UrlID] PRIMARY KEY CLUSTERED
+(
+	[UrlID]
+) ON [PRIMARY]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_forDNN_UniversalAutosave_Url] ON {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url
+(
+	[Url] ASC
+) ON [PRIMARY]
+GO
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Add
+	@Url	[nvarchar]	(1000)
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url
+	VALUES (		@Url);
+	SELECT SCOPE_IDENTITY();
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Update
+	@UrlID	[int],
+	@Url	[nvarchar]	(1000)
+AS
+	UPDATE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url
+	SET
+		Url= @Url
+	WHERE	(UrlID = @UrlID);
+GO
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_Delete
+	@UrlID int
+AS
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url
+	WHERE (UrlID = @UrlID);
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetByPrimaryKey
+	@UrlID int
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url
+	WHERE (UrlID = @UrlID)
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetByUrl
+	@Url	[nvarchar]	(1000)
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url
+	WHERE (Url = @Url)
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url_GetAllItems
+	@SortBy	nvarchar(100)
+AS
+	IF(@SortBy='')
+	BEGIN
+		SELECT *
+		FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url
+	END
+	ELSE
+	BEGIN
+		DECLARE @Query nvarchar(2000);
+		SET @Query =
+			'SELECT *
+			FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Url
+			ORDER BY ' + @SortBy;
+		EXEC(@Query);
+	END
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+
+/*		Universal Autosave Values		*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetByFilter') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetByFilter
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetLastValue') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetLastValue
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_UpdateTrackChanges') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_UpdateTrackChanges
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_CloseSession') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_CloseSession
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+GO
+
+
+CREATE TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value (
+	[ValueID]	[int]	IDENTITY (1, 1)	NOT NULL,
+	[ControlID]	[int]	 			NOT NULL,
+	[UrlID]		[int]	 			NOT NULL,
+	[CreatedAt]	[datetime]	 		NOT NULL,
+	[UserID]	[int]	 			NOT NULL,
+	[Anonymous]	[bit]	 			NOT NULL,
+	[Canned]	[bit]	 			NOT NULL,
+	[Closed]	[bit]	 			NOT NULL,
+	[Value]		[nvarchar] (MAX)	NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value WITH NOCHECK ADD
+CONSTRAINT [PK_forDNN_UniversalAutosave_ValueID] PRIMARY KEY CLUSTERED
+(
+	[ValueID]
+) ON [PRIMARY]
+GO
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Add
+	@ControlID	[int],
+	@UrlID		[int],
+	@CreatedAt	[datetime],
+	@UserID		[int],
+	@Anonymous	[bit],
+	@Canned		[bit],
+	@Closed		[bit],
+	@Value		[nvarchar] (MAX)
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+	VALUES (
+		@ControlID,
+		@UrlID,
+		@CreatedAt,
+		@UserID,
+		@Anonymous,
+		@Canned,
+		@Closed,
+		@Value);
+		
+	SELECT SCOPE_IDENTITY();
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Update
+	@ValueID	[int],
+	@ControlID	[int],
+	@UrlID		[int],
+	@CreatedAt	[datetime],
+	@UserID		[int],
+	@Anonymous	[bit],
+	@Canned		[bit],
+	@Closed		[bit],
+	@Value		[nvarchar]	(MAX)
+AS
+	UPDATE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+	SET
+		ControlID	= @ControlID,
+		UrlID		= @UrlID,
+		CreatedAt	= @CreatedAt,
+		UserID		= @UserID,
+		Anonymous	= @Anonymous,
+		Canned		= @Canned,
+		Closed		= @Closed,
+		Value		= @Value
+	WHERE	(ValueID = @ValueID);
+GO
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_Delete
+	@ValueID int
+AS
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+	WHERE (ValueID = @ValueID);
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetByPrimaryKey
+	@ValueID int
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+	WHERE (ValueID = @ValueID)
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetAllItems
+	@SortBy	nvarchar(100)
+AS
+	IF(@SortBy='')
+	BEGIN
+		SELECT *
+		FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+	END
+	ELSE
+	BEGIN
+		DECLARE @Query nvarchar(2000);
+		SET @Query =
+			'SELECT *
+			FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+			ORDER BY ' + @SortBy;
+		EXEC(@Query);
+	END
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetByFilter
+	@ControlID	int,
+	@UrlID		int,
+	@UserID		int,
+	@Anonymous	bit,
+	@dtFrom		datetime,
+	@dtTo		datetime,
+	@CannedOnly	bit
+AS
+	SELECT	*
+	FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+	WHERE	((@ControlID = -1) OR (@ControlID = ControlID)) AND
+			((@UrlID = -1) OR (@UrlID = UrlID)) AND
+			((@UserID = -1) OR ((@UserID = UserID) AND (Anonymous = @Anonymous)) ) AND
+			((@dtFrom IS NULL) OR (@dtFrom<=CreatedAt)) AND
+			((@dtTo IS NULL) OR (@dtTo>=CreatedAt)) AND
+			((@CannedOnly=0) OR ((@CannedOnly=1) AND (Canned=1)))
+	ORDER BY	Canned DESC, CreatedAt DESC
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_GetLastValue
+	@ControlID	int,
+	@UrlID		int,
+	@UserID		int,
+	@Anonymous	bit
+AS
+	SELECT	TOP 1 *
+	FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+	WHERE	(@ControlID = ControlID)	AND
+			((@UrlID = UrlID) OR (@UrlID=-1))	AND
+			(@UserID = UserID)			AND 
+			(@Anonymous = Anonymous)	AND
+			(Closed=0)
+	ORDER BY	CreatedAt DESC
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_UpdateTrackChanges
+	@ControlID	[int],
+	@UrlID		[int],
+	@UserID		[int],
+	@Anonymous	[bit],
+	@HistoryLength	[int],
+	@HistoryExpiry	[int]
+AS
+	DECLARE	@Query nvarchar(2000);
+	
+	IF(@HistoryLength<>0)
+	BEGIN
+		SET		@Query = 'DELETE FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+WHERE	(Canned=0) AND (ValueID NOT IN (
+		SELECT TOP ' + CAST(@HistoryLength AS nvarchar(10)) + ' ValueID
+FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+WHERE	(ControlID=' + CAST(@ControlID AS nvarchar(10)) + ') AND
+		(UrlID = ' + CAST(@UrlID AS nvarchar(10)) + ') AND
+		(UserID = ' + CAST(@UserID AS nvarchar(10)) + ') AND
+		(Anonymous = ' + CAST(@Anonymous AS nvarchar(10)) + ')
+ORDER BY CreatedAt DESC)) AND
+	(ControlID=' + CAST(@ControlID AS nvarchar(10)) + ') AND
+	(UrlID = ' + CAST(@UrlID AS nvarchar(10)) + ') AND
+	(UserID = ' + CAST(@UserID AS nvarchar(10)) + ') AND
+	(Anonymous = ' + CAST(@Anonymous AS nvarchar(10)) + ')
+';
+		EXEC (@Query);
+	END
+
+	IF(@HistoryExpiry<>0)
+	BEGIN
+		SET		@Query = '
+DELETE
+FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+WHERE (Canned=0) AND (CreatedAt < (DATEADD(DAY,-' + CAST(@HistoryExpiry AS nvarchar(10)) + ', GETDATE()))) AND
+(ControlID=' + CAST(@ControlID AS nvarchar(10)) + ') AND
+		(UrlID = ' + CAST(@UrlID AS nvarchar(10)) + ') AND
+		(UserID = ' + CAST(@UserID AS nvarchar(10)) + ') AND
+		(Anonymous = ' + CAST(@Anonymous AS nvarchar(10)) + ')
+';
+		EXEC (@Query);
+	END
+
+	UPDATE	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+	SET		Closed=1
+	WHERE	(ControlID=@ControlID) AND
+			(UrlID = @UrlID) AND
+			(UserID = @UserID) AND
+			(Anonymous = @Anonymous);
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value_CloseSession
+	@ConfigurationID	int,
+	@UrlID				int,
+	@UserID				int,
+	@Anonymous			bit
+AS
+	UPDATE	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Value
+	SET		Closed=1
+	WHERE	
+			((@UrlID = UrlID) OR (@UrlID=-1))	AND
+			(@UserID = UserID)			AND 
+			(@Anonymous = Anonymous)	AND
+			(Closed=0) AND
+			(ControlID IN (SELECT ControlID FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Configuration WHERE (@ConfigurationID = ConfigurationID)))
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+
+/*		Universal Autosave Events		*/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Delete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Delete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetByPrimaryKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetByPrimaryKey
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetAllItems') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetAllItems
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetByFilter') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetByFilter
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event
+GO
+
+
+CREATE TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event (
+	[EventID]			[int]	IDENTITY (1, 1)	NOT NULL,
+	[ConfigurationID]	[int]	 			NOT NULL,
+	[Selector]			[nvarchar]	(200) 	NOT NULL,
+	[EventName]			[nvarchar]	(200) 	NOT NULL,
+	[Enabled]			[bit]	 			NOT NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event WITH NOCHECK ADD
+CONSTRAINT [PK_forDNN_UniversalAutosave_EventID] PRIMARY KEY CLUSTERED
+(
+	[EventID]
+) ON [PRIMARY]
+GO
+
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Add
+	@ConfigurationID	[int],
+	@Selector			[nvarchar]	(200),
+	@EventName			[nvarchar]	(200),
+	@Enabled			[bit]	
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event
+	VALUES (
+		@ConfigurationID,
+		@Selector,
+		@EventName,
+		@Enabled);
+	SELECT SCOPE_IDENTITY();
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Update
+	@EventID			[int],
+	@ConfigurationID	[int],
+	@Selector			[nvarchar]	(200),
+	@EventName			[nvarchar]	(200),
+	@Enabled			[bit]	
+AS
+	UPDATE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event
+	SET
+		ConfigurationID	= @ConfigurationID,
+		Selector		= @Selector,
+		EventName		= @EventName,
+		Enabled			= @Enabled
+	WHERE	(EventID = @EventID);
+GO
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_Delete
+	@EventID int
+AS
+	DELETE
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event
+	WHERE (EventID = @EventID);
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetByPrimaryKey
+	@EventID int
+AS
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event
+	WHERE (EventID = @EventID)
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetAllItems
+	@SortBy	nvarchar(100)
+AS
+	IF(@SortBy='')
+	BEGIN
+		SELECT *
+		FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event
+	END
+	ELSE
+	BEGIN
+		DECLARE @Query nvarchar(2000);
+		SET @Query =
+			'SELECT *
+			FROM {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event
+			ORDER BY ' + @SortBy;
+		EXEC(@Query);
+	END
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event_GetByFilter
+	@ConfigurationID	[int],
+	@Selector			[nvarchar]	(200)
+AS
+	SELECT	*
+	FROM	{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Event
+	WHERE	((@ConfigurationID=-1) OR (ConfigurationID = @ConfigurationID)) AND
+			((@Selector='') OR (Selector=@Selector))
+	ORDER BY	Selector
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
