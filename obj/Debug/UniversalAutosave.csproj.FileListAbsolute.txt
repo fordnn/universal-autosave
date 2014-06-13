@@ -1,0 +1,7 @@
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal_autosave\universal-autosave\bin\forDNN.Modules.UniversalAutosave.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal_autosave\universal-autosave\bin\forDNN.Modules.UniversalAutosave.pdb
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal_autosave\universal-autosave\bin\DotNetNuke.WebControls.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal_autosave\universal-autosave\bin\Telerik.Web.UI.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal_autosave\universal-autosave\obj\Debug\forDNN.Modules.UniversalAutosave.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal_autosave\universal-autosave\obj\Debug\forDNN.Modules.UniversalAutosave.pdb
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal_autosave\universal-autosave\obj\Debug\UniversalAutosave.csprojResolveAssemblyReference.cache

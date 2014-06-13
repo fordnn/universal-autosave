@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="forDNN.UniversalAutosave" type="Module" version="1.0.0">
+    <package name="forDNN.UniversalAutosave" type="Module" version="01.00.01">
       <friendlyName>forDNN.UniversalAutosave</friendlyName>
       <description>This extension allows automatically to save the values (and to keep history of values) that user enters into the forms fields.</description>
       <iconFile />
@@ -30,6 +30,10 @@
             <script type="Install">
               <name>01.00.00.SqlDataProvider</name>
               <version>01.00.00</version>
+            </script>
+            <script type="Install">
+              <name>01.00.01.SqlDataProvider</name>
+              <version>01.00.01</version>
             </script>
             <script type="UnInstall">
               <name>Uninstall.SqlDataProvider</name>
