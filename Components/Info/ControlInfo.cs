@@ -17,8 +17,9 @@ namespace forDNN.Modules.UniversalAutosave
 		private bool _RestoreOnLoad;
 		private bool _RestoreIfEmpty;
 		private bool _ShowCannedOnly;
-
-		#endregion
+        private string _RTFType;
+		
+        #endregion
 
 		#region Constructors
 
@@ -118,17 +119,24 @@ namespace forDNN.Modules.UniversalAutosave
 			}
 		}
 
-		public int ControlID
-		{
-			get
-			{
-				return _ControlID;
-			}
-			set
-			{
-				_ControlID = value;
-			}
-		}
+        public int ControlID
+        {
+            get
+            {
+                return _ControlID;
+            }
+            set
+            {
+                _ControlID = value;
+            }
+        }
+
+        public string RTFType
+        {
+            get { return _RTFType; }
+            set { _RTFType = value; }
+        }
+
 
 		#endregion
 	}

@@ -1,0 +1,87 @@
+﻿/*		Configuration Controls		*/
+
+IF(
+	NOT EXISTS(
+	SELECT sc.name 
+	FROM syscolumns sc
+	WHERE	(sc.id IN 
+		(SELECT so.id
+		FROM sysobjects so
+		WHERE so.name='{objectQualifier}forDNN_UniversalAutosave_Control'))
+		AND
+		(sc.name='RTFType')
+	)
+)
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control ADD RTFType nvarchar(100) NOT NULL DEFAULT('')
+END
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Add') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Add
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Update
+GO
+
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Add
+	@ConfigurationID	[int],
+	@Selector			[nvarchar]	(200),
+	@Enabled			[bit],
+	@RestoreOnLoad		[bit],
+	@RestoreIfEmpty		[bit],
+	@ShowCannedOnly		[bit],
+	@RTFType			[nvarchar]	(100)
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+	VALUES (
+		@ConfigurationID,
+		@Selector,
+		@Enabled,
+		@RestoreOnLoad,
+		@RestoreIfEmpty,
+		@ShowCannedOnly,
+		@RTFType);
+	SELECT SCOPE_IDENTITY();
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
+
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS OFF
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control_Update
+	@ControlID			[int],
+	@ConfigurationID	[int],
+	@Selector			[nvarchar]	(200),
+	@Enabled			[bit],
+	@RestoreOnLoad		[bit],
+	@RestoreIfEmpty		[bit],
+	@ShowCannedOnly		[bit],
+	@RTFType			[nvarchar]	(100)
+AS
+	UPDATE {databaseOwner}{objectQualifier}forDNN_UniversalAutosave_Control
+	SET
+		ConfigurationID	= @ConfigurationID,
+		Selector		= @Selector,
+		Enabled			= @Enabled,
+		RestoreOnLoad	= @RestoreOnLoad,
+		RestoreIfEmpty	= @RestoreIfEmpty,
+		ShowCannedOnly	= @ShowCannedOnly,
+		RTFType			= @RTFType
+	WHERE	(ControlID = @ControlID);
+GO
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+SET ANSI_NULLS ON
