@@ -1,0 +1,7 @@
+D:\Work\Projects\forDNN\UniversalAutosave\bin\forDNN.Modules.UniversalAutosave.dll
+D:\Work\Projects\forDNN\UniversalAutosave\bin\forDNN.Modules.UniversalAutosave.pdb
+D:\Work\Projects\forDNN\UniversalAutosave\obj\Debug\forDNN.Modules.UniversalAutosave.dll
+D:\Work\Projects\forDNN\UniversalAutosave\obj\Debug\forDNN.Modules.UniversalAutosave.pdb
+D:\Work\Projects\forDNN\UniversalAutosave\bin\Telerik.Web.UI.dll
+D:\Work\Projects\forDNN\UniversalAutosave\bin\DotNetNuke.WebControls.dll
+D:\Work\Projects\forDNN\UniversalAutosave\obj\Debug\UniversalAutosave.csprojResolveAssemblyReference.cache

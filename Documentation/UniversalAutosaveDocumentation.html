@@ -1,0 +1,410 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style type="text/css">
+        #UA_documentation
+        {
+            text-align: justify;
+        }
+
+            #UA_documentation img
+            {
+                padding: 10px;
+            }
+
+            #UA_documentation ul
+            {
+                list-style-type: decimal;
+                list-style-position: inside;
+                padding-left: 20px;
+            }
+
+            #UA_documentation p
+            {
+                padding: 20px 0px;
+            }
+
+            #UA_documentation table
+            {
+                border-collapse: collapse;
+            }
+
+            #UA_documentation td, #UA_documentation th
+            {
+                padding: 5px;
+                vertical-align: top;
+            }
+
+            #UA_documentation table, th, td
+            {
+                border: 1px silver solid;
+            }
+
+        .UA_documentation_index ul
+        {
+            list-style-type: none !important;
+        }
+
+        .UA_documentation_download
+        {
+            display: inline-block;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="UA_documentation">
+        <p>Universal Autosave for DNN Platform (former DotnetNuke)</p>
+        <div>
+            <div class="UA_documentation_download">
+                <a href="https://github.com/fordnn/universal-autosave/tree/master/Install" target="_blank"><span class="blue_btn">Download Install</span></a>
+            </div>
+            <div class="UA_documentation_download">
+                <a href="https://github.com/fordnn/universal-autosave/" target="_blank"><span class="blue_btn">Source Code GITHUB</span></a>
+            </div>
+        </div>
+        <div class="UA_documentation_index">
+            <ul>
+                <li><a href="#UA_Purpose">Purpose of “Universal Autosave Solution”</a></li>
+                <li><a href="#UA_1_Installation">1 Installation</a>
+                    <ul>
+                        <li><a href="#UA_1_1_How_to_install">1.1 How to install</a></li>
+                        <li><a href="#UA_1_2_Adding_Autosave_module_to_the_page">1.2 Adding Autosave module to the page</a></li>
+                        <li><a href="#UA_1_3_Checking_httpModule_status">1.3 Checking httpModule status</a></li>
+                    </ul>
+                </li>
+                <li><a href="#UA_2_Configuration">2 Configuration</a>
+                    <ul>
+                        <li><a href="#UA_2_1_List_of_configurations">2.1 List of configurations</a></li>
+                        <li><a href="#UA_2_2_Add_Edit_autosave_configuration">2.2 Add/Edit autosave configuration</a>
+                            <ul>
+                                <li><a href="#UA_2_2_1_Basic_Settings">2.2.1	Basic Settings</a></li>
+                                <li><a href="#UA_2_2_2_Page_to_use_on">2.2.2	Page to use on</a></li>
+                                <li><a href="#UA_2_2_3_Permissions">2.2.3 Permissions</a></li>
+                                <li><a href="#UA_2_2_4_What_is_uniq_controls_selector">2.2.4 What is “uniq controls selector”</a></li>
+                                <li><a href="#UA_2_2_5_Controls_list">2.2.5 Controls list</a></li>
+                                <li><a href="#UA_2_2_6_Close_session_events">2.2.6 Close session events</a></li>
+                                <li><a href="#UA_2_2_7_WYSIWYG_controls_events_wizard">2.2.7 WYSIWYG controls/events wizard</a></li>
+                                <li><a href="#UA_2_2_8_Manage_saved_values">2.2.8 Manage saved values</a></li>
+                                <li><a href="#UA_2_2_9_Canned_replies_values_configuration">2.2.9 Canned replies/values configuration</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#UA_2_3_Delete_autosave_configuration">2.3 Delete autosave configuration</a></li>
+                    </ul>
+                </li>
+                <li><a href="#UA_3_Autosave_usage">3 Autosave usage</a>
+                    <ul>
+                        <li><a href="#UA_3_1_Changes_tracking">3.1 Changes tracking</a></li>
+                        <li><a href="#UA_3_2_View_history_of_changes">3.2 View history of changes</a></li>
+                        <li><a href="#UA_3_3_Restore_old_values">3.3 Restore old values</a></li>
+                        <li><a href="#UA_3_4_Canned_values_usage">3.4 Canned values usage</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div id="UA_Purpose">
+            <h1>Purpose of “Universal Autosave Solution”</h1>
+            <p>
+                Universal Autosave (UA) is extension for DNN Platform (former DotNetNuke). It allows easy and fast to configure autosave functionality for any form/control without any lines of code. Main features:
+            </p>
+            <ul>
+                <li>Easy and fast configuration.</li>
+                <li>WYSIWYG configuration Wizard.</li>
+                <li>Automatic and manual data restore.</li>
+                <li>Periodical and "smart" autosave.</li>
+                <li>Unlimited autosave history and autosave expiration feature.</li>
+                <li>Client-side and server-side history location.</li>
+                <li>Different permissions for different groups/users.</li>
+                <li>Admin history of changes for any user/control/page.</li>
+                <li>Canned replies/values.</li>
+            </ul>
+        </div>
+        <div id="UA_1_Installation">
+            <h1>1 Installation</h1>
+            <div id="UA_1_1_How_to_install">
+                <h2>1.1 How to install</h2>
+                <p>To install Universal Autosave Extension (UA) please do the next steps:</p>
+                <ul>
+                    <li>Login with SuperUser credentials.</li>
+                    <li>Go to the “Host/ Extensions”.</li>
+                    <li>From the action menu select “Install Extenson Wizard”.</li>
+                    <li>Select file forDNN.UniversalAutosave_PA_xx.xx.xx.zip and go thru the installation process.</li>
+                </ul>
+            </div>
+            <div id="UA_1_2_Adding_Autosave_module_to_the_page">
+                <h2>1.2 Adding Autosave module to the page</h2>
+
+                <p>
+                    Universal Autosave Extension includes “Admin Module” and “httpModule”. Admin module is the primary place where all configuration process runs. httpModule is necessary to work at the site pages to track history of changes.
+To add UA Admin Module it needs to create new page and add “forDNN.UniversalAutosave” module to the page. Please check access permissions for this page are granted for users with admin rights only.
+                </p>
+            </div>
+            <div id="UA_1_3_Checking_httpModule_status">
+                <h2>1.3 Checking httpModule status</h2>
+                <p>Universal Autosave httpModule installs automatically during installation process. Installation adds 2 lines to the web.config file:</p>
+                <ul>
+                    <li>To the path “/configuration/system.webServer/modules/” it adds line
+                    <p>&lt;add name="UniversalAutosave" type="forDNN.Modules.UniversalAutosave.UAHttpModule, forDNN.Modules.UniversalAutosave" /&gt;</p>
+                    </li>
+                    <li>To the path “/configuration/system.web/httpModules/” it adds the same line
+                    <p>&lt;add name="UniversalAutosave" type="forDNN.Modules.UniversalAutosave.UAHttpModule, forDNN.Modules.UniversalAutosave" /&gt;</p>
+                    </li>
+                </ul>
+                <p>To be sure everything has been installed successfully, just open web.config file and check lines at the necessary places.</p>
+            </div>
+        </div>
+        <div id="UA_2_Configuration">
+            <h1>2 Configuration</h1>
+            <div id="UA_2_1_List_of_configurations">
+                <h2>2.1 List of configurations</h2>
+                <p>
+                    After Universal Autosave Admin module been added to the page, as described above (1.2) its possible to start configuration process. UA allows to create unlimited number of configurations. Each configuration belongs only single page and has own set of permissions. However its possible to create multiple configurations per page (with different permissions).
+All configurations are located within single standard grid. Also presents button to add new configuration and edit/delete existing one.
+                </p>
+                <img alt="DNN (DotNetNuke) Universal Autosave, List of Configurations" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_01.PNG" />
+            </div>
+            <div id="UA_2_2_Add_Edit_autosave_configuration">
+                <h2>2.2 Add/Edit autosave configuration</h2>
+                <p><i>WARNING! New configuration requires to “Update” after “Permissions” tab will be populated and before continue with next tabs. Before “Upgrade” clicked, tabs “Controls list”, “Close session events” and “Manage saved values” are not active (grayed out). To continue please click “Update”.</i></p>
+                <div id="UA_2_2_1_Basic_Settings">
+                    <h3>2.2.1 Basic Settings</h3>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Basic Settings" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_02.PNG" />
+                    <table>
+                        <tr>
+                            <th width="15%">Field Name</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>Contains name of the configuration. This name displays in the grid.</td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>Description of the autosave configuration.</td>
+                        </tr>
+                        <tr>
+                            <td>Autosave enabled</td>
+                            <td>Defines whether configuration is enabled or not.</td>
+                        </tr>
+                        <tr>
+                            <td>Autosave icon</td>
+                            <td>Defines to display or to hide service icon
+                <img alt="DNN (DotNetNuke) Universal Autosave, Work icon" src="/Portals/0/UniversalAutosave/uaWork.png" />
+                                at the top right corner of the controls, selected to track changes of values.</td>
+                        </tr>
+                        <tr>
+                            <td>Autosave on focus lost</td>
+                            <td>When checked, then value of the control automatically stores every time control loses focus (equal onBlur JavaScript event).</td>
+                        </tr>
+                        <tr>
+                            <td>Autosave period</td>
+                            <td>Interval in seconds to track changes of the controls. When “Autosave period” is equal 0, then periodical autosave is Off.</td>
+                        </tr>
+                        <tr>
+                            <td>Autosave history length</td>
+                            <td>Number of records to keep in DB per each control. Old records delete by FIFO method (first in first out), so the oldest one will be deleted first. When “Autosave history length” is equal 0, then history of changes is not limited. Be careful with this option, this can make unlimited DB grown.</td>
+                        </tr>
+                        <tr>
+                            <td>History expiries in</td>
+                            <td>Number of days to keep history of values. After defined number of days values will be deleted. When “Autosave history length” is equal 0, then history of changes keeps forever. Be careful with this option, as soon this can make unlimited DB grown.</td>
+                        </tr>
+                        <tr>
+                            <td>Autosave location</td>
+                            <td>Location, wheку history of changes have to be placed. Its possible to store history of changes at the Server (by default) and in the Cookies. Advantages and disadvantages of each type you can see in the table below:
+                                <table>
+                                    <tr>
+                                        <td>Params</td>
+                                        <td>Server</td>
+                                        <td>Cookie</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Speed</td>
+                                        <td>Slower</td>
+                                        <td>Faster</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Secure</td>
+                                        <td>More secure</td>
+                                        <td>Less secure</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Access from different browsers</td>
+                                        <td>Yes</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Admin stored values</td>
+                                        <td>Yes</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Allows canned values</td>
+                                        <td>Yes</td>
+                                        <td>No</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>URL-independent</td>
+                            <td>By default history of changes tracks by 4 params: Page (TabID), ControlID (uniq selector of the control), UserID and UrlID (creates based on the params passed for the page). It means, for example, Product Name textbox has different history for products with different ProductID. But when it needs to have common history of changes within the same page and the same control and independent on URL, then “URL-independent” checkbox should be checked.
+                                <p><i>Important! This param can be changed any time. In DB always keeps right UrlID, so history always will be displayed properly (ever for old values).</i></p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="UA_2_2_2_Page_to_use_on">
+                    <h3>2.2.2 Page to use on</h3>
+                    <p>Its necessary to select what page this configuration belongs to. Tree contains all pages structure of the current site.</p>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Page to use on" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_03.PNG" />
+                    <p>At the top of tree “Quick Search” textbox is located. It allows to run quick pages search.</p>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Page to use on quick search" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_04.PNG" />
+                    <p>Just click on the page, you want configuration to be applied to.</p>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Page to use on select" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_05.PNG" />
+                </div>
+                <div id="UA_2_2_3_Permissions">
+                    <h3>2.2.3 Permissions</h3>
+                    <p>List of permissions should be defined per each configuration. This is standard DNN permissions grid. It allows Roles/Users enabled to use this configuration.</p>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Permissions" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_06.PNG" />
+                    <p><i>WARNING! New configuration requires to “Update” after “Permissions” tab will be populated and before continue with next tabs. Before “Upgrade” clicked, tabs “Controls list”, “Close session events” and “Manage saved values” are not active (grayed out). To continue please click “Update”.</i></p>
+                </div>
+                <div id="UA_2_2_4_What_is_uniq_controls_selector">
+                    <h3>2.2.4 What is “uniq controls selector”</h3>
+                    <p><i>Info: “Uniq controls selector” is identifier of the controls at the form. It can be ID of the DOM element, name of this element or pair “element type + element class”. Sometimes its impossible to identify uniq selector – controls without it can’t be served by autosave functionality (only very small amount of controls like this).</i></p>
+                </div>
+                <div id="UA_2_2_5_Controls_list">
+                    <h3>2.2.5 Controls list</h3>
+                    <p>“Controls list” is list of controls, autosave functionality should be applied to. List contains uniq selector of each control and autosave settings per each control. By default list of controls is empty. There are 2 ways to populate list of controls:</p>
+                    <ul>
+                        <li>WYSIWYG controls management – allows easy and fast select controls for autosave functionality. Click “Start controls wizard” button to start WYSIWYG controls management. This will start <a href="#UA_2_2_7_WYSIWYG_controls_events_wizard">WYSIWYG controls wizard</a>.</li>
+                        <li>Manually – just type uniq selector at the “Quick add selector” textbox and click “Add” button. This will add new selector to list.</li>
+                    </ul>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Controls list empty grid" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_07.PNG" />
+                    <p>Once list of controls is populated, it looks like this:</p>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Controls list populated grid" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_11.PNG" />
+                    <table>
+                        <tr>
+                            <td>Field Name</td>
+                            <td>Description</td>
+                        </tr>
+                        <tr>
+                            <td>Selector</td>
+                            <td><a href="#UA_2_2_4_What_is_uniq_controls_selector">Uniq selector</a> of the control. Textbox next to it allows easy and fast filter grid by selector.</td>
+                        </tr>
+                        <tr>
+                            <td>Enabled</td>
+                            <td>Autosave feature enabled or disabled.</td>
+                        </tr>
+                        <tr>
+                            <td>Restore On Load</td>
+                            <td>When checked, last value from history will be restored in the control on page load.</td>
+                        </tr>
+                        <tr>
+                            <td>Restore If Empty</td>
+                            <td>Restores value only if control does not have own value, prepopulated at the server side.</td>
+                        </tr>
+                        <tr>
+                            <td>Show canned only</td>
+                            <td>Displays in the history for user only <a href="#UA_2_2_9_Canned_replies_values_configuration">“canned” values</a>. This feature is very usefull in situations, when controls required predetermined values for common situations.</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="UA_2_2_6_Close_session_events">
+                    <h3>2.2.6 Close session events</h3>
+                    <p>
+                        “Close session events” – are events generated by click on A or INPUT[type=”submit”] controls. Why they need? These events are important to know current autosave session is closed and current control does not require to restore automatically last value from history on the next page load. These events are not required, but make work more flexible.
+For example:
+                    </p>
+                    <ul>
+                        <li>Feedback form contains controls: Email, Name, Subject, Body and “Send feedback” button.</li>
+                        <li>User can populate fields, close browser or open form at another browser (for registered users only). Values will always be at the same place.</li>
+                        <li>Once user finished form population and clicked “Send feedback” – it means current session with this form is done. It has no sense to restore last values automatically, on the next page load.</li>
+                        <li>So admin selects “Send feedback” button as source of the “close session event” and autosave session for current controls will be closed. On the next page load user will get an empty form.</li>
+                        <li>User always can check history of changes he made for these controls and to restore values manually.</li>
+                    </ul>
+                    <p>Close session events can be selected in the same ways as <a href="#UA_2_2_5_Controls_list">Controls</a>. Populated list of events looks like this:</p>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Populated list of eevents" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_12.PNG" />
+                    <p>All controls at this tab are exactly the same as for <a href="#UA_2_2_5_Controls_list">Controls tab</a>.</p>
+                </div>
+                <div id="UA_2_2_7_WYSIWYG_controls_events_wizard">
+                    <h3>2.2.7	WYSIWYG controls/events wizard</h3>
+                    <p>
+                        WYSIWYG controls/events wizard is easy and fast way to add controls and close session events. When wizard is called, it opens page it belongs to. At the top right corner of the each control (available to use autosave functionality) appears special config icon
+        <img alt="DNN (DotNetNuke) Universal Autosave, Work icon" src="/Portals/0/UniversalAutosave/uaConfig.png" />. Its enough just to click on this icon to enable autosave for this control. Once autosave enabled, icon changes to
+        <img alt="DNN (DotNetNuke) Universal Autosave, Work icon" src="/Portals/0/UniversalAutosave/uaConfigSelected.png" />. That is really easy and fast.
+WYSIWYG wizard uses these DOM types for:
+                    </p>
+                    <ul>
+                        <li>Controls - INPUT[type="text"], INPUT[type="radio"], INPUT[type="checkbox"], TEXTAREA, SELECT.</li>
+                        <li>Close session events - A, INPUT[type="submit"].</li>
+                    </ul>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Autosave configuration wizard info window" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_08.PNG" />
+                    <p>At the end of work with Wizard click “Stop Wizard” button at the bottom right corner of the screen.</p>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Stop wizard button" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_09.PNG" />
+                    Example with selected controls and close events.
+            <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Wizard is done" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_10.PNG" />
+                </div>
+                <div id="UA_2_2_8_Manage_saved_values">
+                    <h3>2.2.8 Manage saved values</h3>
+                    <p>Autosave admin module allows to manage history of changes for all users in easy and flexinle way.</p>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Manage saved values" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_13.PNG" />
+                    <p>Tab “Manage saved values” allows to manage all stored values. There is a filter to find required values in simple and fast way. It allows to filter values by control/user (belong to the current configuration) and by dates interval. Grid of values allows to edit and delete items also. Also it allows to manage Canned values.</p>
+                </div>
+                <div id="UA_2_2_9_Canned_replies_values_configuration">
+                    <h3>2.2.9 Canned replies/values configuration</h3>
+                    <p>“Canned replies/values” – feature of universal autosave. It allows to display only limited number of values (only “canned values”) from the history of changes. This feature is very usefull in situations, when controls required predetermined values for common situations. Rather than typing the same answer repeatedly or pasting from some other resource, user can insert a canned response from drop-down menu.</p>
+                    <p>To enable “Canned values” admin should put a tick for necessary control at the <a href="#UA_2_2_5_Controls_list">Controls tab</a>. Once it checked, then <a href="#UA_3_2_View_history_of_changes">history will display</a> “canned values” only.</p>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Canned values for controls" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_14.PNG" />
+                    <p>To define set of “Canned values” per control at the “Manage saved values” tab its necessary to select values you want to use. Column “Canned value” exists for this purpose.</p>
+                    <img alt="DNN (DotNetNuke) Universal Autosave, Edit Configuration, Canned values checking" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_15.PNG" />
+                    <p>After these actions only values, marked as “canned” will be <a href="#UA_3_2_View_history_of_changes">displayed in the history of changes</a>.</p>
+                </div>
+            </div>
+            <div id="UA_2_3_Delete_autosave_configuration">
+                <h2>2.3 Delete autosave configuration</h2>
+                <p>Configuration can be deleted from the grid of configurations or from the edit form by clicking “Delete” button.</p>
+                <p><i>WARNING! Be very carefully with configuration deleting! All nested information (includes history of changes) will be deleted permanently. This process can’t be undone!</i></p>
+            </div>
+        </div>
+        <div id="UA_3_Autosave_usage">
+            <h1>3 Autosave usage</h1>
+            <div id="UA_3_1_Changes_tracking">
+                <h2>3.1 Changes tracking</h2>
+                <p>
+                    Changes tracking works automatically, based on the <a href="#UA_2_2_Add_Edit_autosave_configuration">configuration</a> made by admin. There are two events fired changes saving: focus lose and by timer. User should not perform any actions, he just have to work in the same way as worked before. Single difference is only an icon
+    <img alt="DNN (DotNetNuke) Universal Autosave, Work icon" src="/Portals/0/UniversalAutosave/uaWork.png" />
+                    at the top right corner of control, supports autosave feature. If necessary, admin can disable these icons at the configuration, <a href="#UA_2_2_1_Basic_Settings">“Basic settings”</a> by unchecking “Autosave icon”.
+                </p>
+                <img alt="DNN (DotNetNuke) Universal Autosave, Usage, Changes tracking" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_16.PNG" />
+            </div>
+            <div id="UA_3_2_View_history_of_changes">
+                <h2>3.2 View history of changes</h2>
+                <p>
+                    User can get full history of changes in easy way – he just needs to click at the autosave icon at the top right corner of the control
+    <img alt="DNN (DotNetNuke) Universal Autosave, Work icon" src="/Portals/0/UniversalAutosave/uaWork.png" />. It will cause dialog opening with full list of changes related to current control.
+                </p>
+                <img alt="DNN (DotNetNuke) Universal Autosave, Usage, View history of changes" src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_17.PNG" />
+                <p>History of changes shows a grid. Grid contains information about date and time when change has been done. By clicking on the row user can restore value back to the control.</p>
+            </div>
+            <div id="UA_3_3_Restore_old_values">
+                <h2>3.3 Restore old values</h2>
+                <p>There are two ways to restore old values:</p>
+                <ul>
+                    <li>Autosave automatically restores the last value was in the control on page load (if “Restore On Load” is enabled for this control).</li>
+                    <li>User can manually restore any value from the grid with <a href="#UA_3_2_View_history_of_changes">history of changes</a> just by clicking on row.</li>
+                </ul>
+                <p>For registered users full history is always available, ever browser or computer has been changed.</p>
+            </div>
+            <div id="UA_3_4_Canned_values_usage">
+                <h2>3.4 Canned values usage</h2>
+                <p>Based on example we have made in <a href="#UA_2_2_9_Canned_replies_values_configuration">Canned values configuration</a>, result for user should look like this:</p>
+                <img alt="DNN (DotNetNuke) Universal Autosave, Usage, Canned values " src="/Portals/0/UniversalAutosave/UniversalAutosave_Configuration_18.PNG" />
+                <p>Difference from the results, displayed in the <a href="#UA_3_2_View_history_of_changes">full history of changes</a> is obvious – only limited number of values displays. This can be a great time saver if you frequently find yourself typing the same thing. You can create and save as many canned values as you like!</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

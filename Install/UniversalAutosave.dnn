@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="forDNN.UniversalAutosave" type="Module" version="1.0.0">
+    <package name="forDNN.UniversalAutosave" type="Module" version="01.00.01">
       <friendlyName>forDNN.UniversalAutosave</friendlyName>
       <description>This extension allows automatically to save the values (and to keep history of values) that user enters into the forms fields.</description>
       <iconFile />
@@ -22,7 +22,13 @@
           THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         </p>
       </license>
-      <releaseNotes>First stable release.</releaseNotes>
+      <releaseNotes>
+        01.00.01 <br/>
+        - Added support for HTML Editor (DotNetNuke.RadEditorProvider). <br/>
+        - Modified history preview for long content. Now it displays only limited number of characters with show more button. <br/>
+        01.00.00 <br/>
+        - First stable release.
+      </releaseNotes>
       <components>
         <component type="Script">
           <scripts>
@@ -31,9 +37,13 @@
               <name>01.00.00.SqlDataProvider</name>
               <version>01.00.00</version>
             </script>
+            <script type="Install">
+              <name>01.00.01.SqlDataProvider</name>
+              <version>01.00.01</version>
+            </script>
             <script type="UnInstall">
               <name>Uninstall.SqlDataProvider</name>
-              <version>1.0.0</version>
+              <version>01.00.01</version>
             </script>
           </scripts>
         </component>

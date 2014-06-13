@@ -240,7 +240,8 @@ namespace forDNN.Modules.UniversalAutosave
 				objControl.Enabled,
 				objControl.RestoreOnLoad,
 				objControl.RestoreIfEmpty,
-				objControl.ShowCannedOnly));
+				objControl.ShowCannedOnly,
+                objControl.RTFType));
 			return intResID;
 		}
 
@@ -254,7 +255,8 @@ namespace forDNN.Modules.UniversalAutosave
 				objControl.Enabled,
 				objControl.RestoreOnLoad,
 				objControl.RestoreIfEmpty,
-				objControl.ShowCannedOnly);
+				objControl.ShowCannedOnly,
+                objControl.RTFType);
 		}
 
 		public override void Control_Delete(int ControlID)

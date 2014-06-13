@@ -147,6 +147,7 @@ namespace forDNN.Modules.UniversalAutosave
 					SubDate = objTemp.CreatedAt.ToShortDateString();
 					sb.AppendFormat("<tr><td class=\"uaCenter\" colspan=\"2\">{0}</td></tr>", SubDate);
 				}
+                ///TrimHTML(objTemp.Value)
 				sb.AppendFormat("<tr ua=\"{2}\"><td class=\"value\">{0}</td><td>{1}</td></tr>",
 					objTemp.Value,
 					objTemp.CreatedAt.ToShortTimeString(),
@@ -266,9 +267,9 @@ namespace forDNN.Modules.UniversalAutosave
 		{
 			int ConfigurationID = Convert.ToInt32(Request.QueryString["configurationID"]);
 			string Selector = Request.QueryString["selector"];
-			string objType = Request.QueryString["type"].ToLower();
-			bool IsEvent = ((objType == "a") || (objType == "input[type=\"submit\"]"));
-
+			//string objType = Request.QueryString["type"].ToLower();
+			//bool IsEvent = ((objType == "a") || (objType == "input[type=\"submit\"]"));
+            bool IsEvent = bool.Parse(Request.QueryString["IsEvent"]);
 			if (IsEvent)
 			{
 				List<EventInfo> lstEvents = EventController.Event_GetByFilter(ConfigurationID, Selector);
@@ -309,8 +310,10 @@ namespace forDNN.Modules.UniversalAutosave
 		{
 			int ConfigurationID = Convert.ToInt32(Request.QueryString["configurationID"]);
 			string Selector = Request.QueryString["selector"];
-			string objType = Request.QueryString["type"].ToLower();
-			bool IsEvent = ((objType == "a") || (objType == "input[type=\"submit\"]"));
+			//string objType = Request.QueryString["type"].ToLower();
+            //bool IsEvent = ((objType == "a") || (objType == "input[type=\"submit\"]"));
+            string _RTFType = Request.QueryString["RTFEditor"].ToLower();
+            bool IsEvent = bool.Parse(Request.QueryString["IsEvent"]);
 
 			if (IsEvent)
 			{
@@ -338,6 +341,7 @@ namespace forDNN.Modules.UniversalAutosave
 					objControl.ConfigurationID = ConfigurationID;
 					objControl.Selector = Selector;
 					objControl.Enabled = true;
+                    objControl.RTFType = _RTFType;
 					objControl.ControlID = ControlController.Control_Add(objControl);
 				}
 				else
