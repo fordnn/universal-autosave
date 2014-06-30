@@ -193,16 +193,19 @@ function uaProcessAutoConfigGlobal(uaParams)
 			uaConfigClick(uaButton, uaParams)
 		}
 	);
-	debugger;
-    
+	
+	$("div.uaButton").remove();
+	
+	debugger;    
 	$.get(
 		uaParams.path + "UAHandler.aspx",
 		{ configurationID: uaParams.config.ConfigurationID, tabID : uaParams.config.TabID, action: "addPageToGlobalConfig"},
 		function (data)
 		{
-		    if (data == "1")
+		    if (true/*data == "1"*/)
 		    {
-				
+			debugger;
+				uaProcess(data)
 		    }
 		    else
 		    {
@@ -211,12 +214,13 @@ function uaProcessAutoConfigGlobal(uaParams)
 		}
 	);	
 	
-	location.reload();
+	//location.reload();
 	
 }
 
 function uaProcess(uaParams)
 {
+debugger;
     if ((uaParams.controls.length == 0) && (uaParams.events.length == 0))
     {
         return;

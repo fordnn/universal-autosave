@@ -93,25 +93,17 @@ namespace forDNN.Modules.UniversalAutosave
             List<ConfigurationInfo> lstConfigurations = ConfigurationController.Configuration_GetByTabID(TabID);
             UserInfo objUser = UserController.GetCurrentUserInfo();
 
-
-            ///
-            
             if (lstConfigurations.Count == 0) //check on global configuration
             {
                 List<ConfigurationInfo> globalConfiguration = ConfigurationController.Configuration_GetByTabID(-1);
-
                 objResult = globalConfiguration.Count > 0 ? globalConfiguration[0] : null;
 
                 if (globalConfiguration != null && objResult.AutosaveEnabled && CommonController.ConfigAllowed(objUser, objResult))
                 {
                     //objResult.ConfigurationMode = true;
                     objResult.GlobalConfigMode = true;
-                   
-
-                    //return objResult;
                 }
             }
-            //
 
             foreach (ConfigurationInfo objConfig in lstConfigurations)
             {
@@ -210,16 +202,8 @@ namespace forDNN.Modules.UniversalAutosave
                         //}
 					}
 
-                    if (objConfig == null)
+                    if ( objConfig != null )
                     {
-                        throw new ApplicationException("configuration not found for this page");
-                    }
-
-
-
-
-                    //if ( (objConfig.AutosaveEnabled && !ConfigurationMode) || ConfigurationMode)
-                    //{
 
 						int UserID = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo().UserID;
 						bool IsAnonymous = (UserID == -1);
@@ -271,17 +255,17 @@ namespace forDNN.Modules.UniversalAutosave
                                 );
                         }
 
-                        if (objConfig.GlobalConfigMode == true)
-                        {
-                            //
-                        }
+                        //if (objConfig.GlobalConfigMode == true)
+                        //{
+                        //    //
+                        //}
 
-                        if (ConfigurationMode == false && objConfig.GlobalConfigMode == false)
+                        if (ConfigurationMode == false/* && objConfig.GlobalConfigMode == false*/)
                         {
                             injectHtml = string.Format
                                 (
                                 "<div id=\"uaPopup\" style=\"display:none;\"><span class=\"NormalRed\">{0}</span><span class=\"uaHidden\">{1}</span><div></div></div>" +
-                                "<div id=\"uaDiff\" style=\"display:none;\"><span class=\"NormalRed\">{0}</span><span class=\"uaHidden\">{2}</span><div></div>{3}",
+                                "<div id=\"uaDiff\" style=\"display:none;\"><span class=\"NormalRed\">{0}</span><span class=\"uaHidden\">{2}</span><div></div></div>{3}",
                                 Localization.GetString("PleaseWait", LocalResource),
                                 Localization.GetString("DialogTitle", LocalResource),
                                 Localization.GetString("DialogTitleDiff", LocalResource),
@@ -296,7 +280,7 @@ namespace forDNN.Modules.UniversalAutosave
 								string.Format("<script type=\"text/javascript\" src=\"{0}?{1}\"></script>",
 									CommonController.ResolveUrl("js/ua.js", false),
 									DateTime.Now.Ticks));
-					//}
+					}
 				}
 			}
 			catch (Exception Exc)
