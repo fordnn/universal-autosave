@@ -341,6 +341,9 @@ namespace forDNN.Modules.UniversalAutosave
 				case "removeControl":
 					RemoveControl();
 					break;
+                case "addPageToGlobalConfig":
+                    AddPageToGlobalConfig();
+                    break;
 				case "updateControlSelector":
 					UpdateControlSelector();
 					break;
@@ -370,6 +373,13 @@ namespace forDNN.Modules.UniversalAutosave
 					break;
 			}
 		}
+
+        private void AddPageToGlobalConfig()
+        {
+            int ConfigurationID = Convert.ToInt32(Request.QueryString["configurationID"]);
+            int TabID = Convert.ToInt32(Request.QueryString["tabID"]);
+            TabsInGlobalConfigurationController.TabsInGlobalConfiguration_Add(ConfigurationID, TabID);
+        }
 
 		#region Controls Grid
 
@@ -479,6 +489,9 @@ namespace forDNN.Modules.UniversalAutosave
 
 			WriteSuccess();
 		}
+
+
+
 
 		private void ChangeControlEnabled()
 		{
