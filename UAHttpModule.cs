@@ -100,20 +100,29 @@ namespace forDNN.Modules.UniversalAutosave
 
                 if (globalConfiguration != null && objResult.AutosaveEnabled && CommonController.ConfigAllowed(objUser, objResult))
                 {
-                    //objResult.ConfigurationMode = true;
-                    objResult.GlobalConfigMode = true;
+                    objResult.ConfigurationMode = true;
+                    objResult.IsGlobalConfig = true;
+                }
+            }
+            else
+            {
+                foreach (ConfigurationInfo objConfig in lstConfigurations)
+                {
+                    if ((CommonController.ConfigAllowed(objUser, objConfig)) && (objConfig.AutosaveEnabled))
+                    {
+                        objResult = objConfig;
+
+                        break;
+                    }
                 }
             }
 
-            foreach (ConfigurationInfo objConfig in lstConfigurations)
+            if (objResult.TabID == -1)
             {
-                if ((CommonController.ConfigAllowed(objUser, objConfig)) && (objConfig.AutosaveEnabled))
-                {
-                    objResult = objConfig;
-                    break;
-                }
+                objResult.IsGlobalConfig = true;
+                objResult.TabID = TabID;
             }
-            objResult.TabID = TabID;
+
             return objResult;
         }
 
@@ -196,10 +205,10 @@ namespace forDNN.Modules.UniversalAutosave
                         //lets try to check if we have work configuration or globalConfiguration for current TabID
 						objConfig = GetConfiguration(objContext);
                         
-                        //if (objConfig.ConfigurationMode)
-                        //{
-                        //    ConfigurationMode = true;
-                        //}
+                        if (objConfig.ConfigurationMode && objConfig.IsGlobalConfig)
+                        {
+                            ConfigurationMode = true;
+                        }
 					}
 
                     if ( objConfig != null )
@@ -221,7 +230,13 @@ namespace forDNN.Modules.UniversalAutosave
 						}
 
 						//get controls and last values for them
-						List<ControlInfo> lstFullControls = ControlController.Control_GetByFilter(objConfig.ConfigurationID, "");
+                        List<ControlInfo> lstFullControls =  ControlController.Control_GetByFilter(objConfig.ConfigurationID, "");
+                        
+                        if (objConfig.IsGlobalConfig)
+                        {
+                            lstFullControls = lstFullControls.FindAll(i=> i.TabID == objConfig.TabID);
+                        }
+
 						foreach (ControlInfo objCtl in lstFullControls)
 						{
 							objCtl.Value =
@@ -243,24 +258,34 @@ namespace forDNN.Modules.UniversalAutosave
                         string LocalResource = CommonController.GetCommonResourcesPath();
                         string injectHtml = string.Format("<script type=\"text/javascript\">uaInit({0});</script>", json);
                         
-                        if (ConfigurationMode == true && objConfig.GlobalConfigMode == false)
+                        if (ConfigurationMode == true)
                         {
-                            injectHtml = string.Format
-                                (
-                                "<div class=\"uaWizardStop\"><a class=\"dnnPrimaryAction uaWizardButton\" href=\"{0}\" onclick=\"javascript:dnn.dom.setCookie('uaWizard', -1, -1, '/');\">{1}</a></div>{2}{3}",
-                                DotNetNuke.Common.Globals.NavigateURL(objConfig.TabID),
-                                Localization.GetString("WizardStop", LocalResource),
-                                GetWizardHelp(objContext, objjsInfo.path, LocalResource),
-                                injectHtml
-                                );
+                            if (objConfig.IsGlobalConfig)
+                            {
+                                injectHtml = string.Format
+                                    (
+                                    "<div id=\"uaPopup\" style=\"display:none;\"><span class=\"NormalRed\">{0}</span><span class=\"uaHidden\">{1}</span><div></div></div>" +
+                                    "<div id=\"uaDiff\" style=\"display:none;\"><span class=\"NormalRed\">{0}</span><span class=\"uaHidden\">{2}</span><div></div></div>{3}",
+                                    Localization.GetString("PleaseWait", LocalResource),
+                                    Localization.GetString("DialogTitle", LocalResource),
+                                    Localization.GetString("DialogTitleDiff", LocalResource),
+                                    injectHtml
+                                    );
+                            }
+                            else
+                            {
+                                injectHtml = string.Format
+                                    (
+                                    "<div class=\"uaWizardStop\"><a class=\"dnnPrimaryAction uaWizardButton\" href=\"{0}\" onclick=\"javascript:dnn.dom.setCookie('uaWizard', -1, -1, '/');\">{1}</a></div>{2}{3}",
+                                    DotNetNuke.Common.Globals.NavigateURL(objConfig.TabID),
+                                    Localization.GetString("WizardStop", LocalResource),
+                                    GetWizardHelp(objContext, objjsInfo.path, LocalResource),
+                                    injectHtml
+                                    );
+                            }
                         }
 
-                        //if (objConfig.GlobalConfigMode == true)
-                        //{
-                        //    //
-                        //}
-
-                        if (ConfigurationMode == false/* && objConfig.GlobalConfigMode == false*/)
+                        if (ConfigurationMode == false)
                         {
                             injectHtml = string.Format
                                 (

@@ -53,11 +53,11 @@ namespace forDNN.Modules.UniversalAutosave
 
 		#endregion
 
-        #region Abstract Methods TabsInGlobalConfiguration
+        //#region Abstract Methods TabsInGlobalConfiguration
 
-        public abstract void TabsInGlobalConfiguration_Add(int ConfigurationID, int TabID);
+        ////public abstract void TabsInGlobalConfiguration_Add(int ConfigurationID, int TabID);
 
-        #endregion
+        //#endregion
 
 		#region Abstract Methods ConfigurationPermission
 

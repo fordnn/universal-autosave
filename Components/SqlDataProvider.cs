@@ -174,17 +174,17 @@ namespace forDNN.Modules.UniversalAutosave
 
 		#endregion
 
-        #region TabsInGlobalConfiguration Methods
+        //#region TabsInGlobalConfiguration Methods
 
-        public override void TabsInGlobalConfiguration_Add(int ConfigurationID, int TabID)
-        {
-            SqlHelper.ExecuteScalar(ConnectionString,
-                GetFullyQualifiedName("TabsInGlobalConfiguration_Add"),
-                ConfigurationID,
-                TabID);            
-        }
+        //public override void TabsInGlobalConfiguration_Add(int ConfigurationID, int TabID)
+        //{
+        //    SqlHelper.ExecuteScalar(ConnectionString,
+        //        GetFullyQualifiedName("TabsInGlobalConfiguration_Add"),
+        //        ConfigurationID,
+        //        TabID);            
+        //}
 
-        #endregion TabsInGlobalConfiguration Methods
+        //#endregion TabsInGlobalConfiguration Methods
 
         #region ConfigurationPermission Methods
 
@@ -248,6 +248,7 @@ namespace forDNN.Modules.UniversalAutosave
 			intResID = Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString,
 				GetFullyQualifiedName("Control_Add"),
 				objControl.ConfigurationID,
+                objControl.TabID,
 				objControl.Selector,
 				objControl.Enabled,
 				objControl.RestoreOnLoad,
@@ -263,6 +264,7 @@ namespace forDNN.Modules.UniversalAutosave
 				GetFullyQualifiedName("Control_Update"),
 				objControl.ControlID,
 				objControl.ConfigurationID,
+                objControl.TabID,
 				objControl.Selector,
 				objControl.Enabled,
 				objControl.RestoreOnLoad,

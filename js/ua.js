@@ -6,18 +6,20 @@ function uaInit(uaParams)
 		function ()
 		{
 		debugger;
-			if (uaParams.config.GlobalConfigMode)
-			{
-				uaProcessAutoConfigGlobal(uaParams);
-			}
 
 		    if (uaParams.config.ConfigurationMode)
 		    {
+				if (uaParams.config.IsGlobalConfig)
+				{
+					uaProcessAutoConfigGlobal(uaParams);
+				}
+				else
+				{
 					uaProcessConfig(uaParams);
+				}
 		    }
-			
-		    if (uaParams.config.ConfigurationMode == false && uaParams.config.GlobalConfigMode == false)
-		    {
+			else
+		    		    {
 		        uaProcess(uaParams);
 		    }
 		});
@@ -44,7 +46,7 @@ function getHtmlElementsToDrawUaButton(uaParams)
     //standard HTML form input control (+  a,input[type="submit"] for events close session)
 	var lstControlsStandard;
 	
-	if (uaParams.config.GlobalConfigMode)
+	if (uaParams.config.IsGlobalConfig)
     lstControlsStandard = $("textarea:visible");
 	else
 	lstControlsStandard = $("input[type=\"text\"],input[type=\"radio\"],input[type=\"checkbox\"],textarea,select,a,input[type=\"submit\"]");
@@ -129,17 +131,15 @@ function uaConfigClick(uaButton, uaParams)
 {
     var objThis = $(uaButton);
     var action = (objThis.hasClass("uaConfigSelected")) ? "removeControl" : "addControl";
-    //var objSelector = $(objThis.attr("ua"));
-
+	var tabID = uaParams.config.TabID;
     var isEvent = objThis.attr("ua_isevent") !== undefined ? true : false
-    //var objType = objSelector[0].nodeName + ((objSelector.attr("type") == null) ? "" : ("[" + objSelector.attr("type") + "]"));
     objThis.addClass("uaProgress");
 
     var typeRTFEditor = getTypeEditorByUaButton(uaButton, uaParams);
 
     $.get(
 		uaParams.path + "UAHandler.aspx",
-		{ configurationID: uaParams.config.ConfigurationID, action: action, selector: objThis.attr("ua"), IsEvent: isEvent /*type: objType*/, RTFEditor: typeRTFEditor },
+		{ configurationID: uaParams.config.ConfigurationID, action: action, selector: objThis.attr("ua"), IsEvent: isEvent, tabID: tabID, RTFEditor: typeRTFEditor },
 		function (data)
 		{
 		    objThis.removeClass("uaProgress");
@@ -179,30 +179,29 @@ function uaProcessAutoConfigGlobal(uaParams)
 		    var objVal = $(val);
 
 		    var uniqID = uaGetUniqID(objVal);
-		    if (uniqID == "") /*|| (uniqID == null) check in uaGetUniqID()  */
+		    if (uniqID == "")
 		    {
-		        //nothing to do with element we can't identify (for now - in this version)
 		        return;
 		    }
 
 		    var className = "uaConfig";
-	     
-		     objVal.after("<div class=\"uaButton\"><a href=\"#\" class=\"" + className + "\" ua=\"" + uniqID + "\"></a></div>");
-		    
+		    objVal.after("<div class=\"uaButton\"><a href=\"#\" class=\"" + className + "\" ua=\"" + uniqID + "\"></a></div>");
 			var uaButton = $("a[ua=" + uniqID + "]")
-			uaConfigClick(uaButton, uaParams)
+
+			uaConfigClick(uaButton, uaParams)//emulation  ConfigClick
+
+			uaButton.closest("div.uaButton").remove();
 		}
 	);
-	
-	$("div.uaButton").remove();
-	
+
 	debugger;    
+
 	$.get(
 		uaParams.path + "UAHandler.aspx",
-		{ configurationID: uaParams.config.ConfigurationID, tabID : uaParams.config.TabID, action: "addPageToGlobalConfig"},
+		{ configurationID: uaParams.config.ConfigurationID, tabID : uaParams.config.TabID, action: "getConfigJson"},
 		function (data)
 		{
-		    if (true/*data == "1"*/)
+		    if (true/*data == "1"*/) // TODO
 		    {
 			debugger;
 				uaProcess(data)
@@ -221,7 +220,7 @@ function uaProcessAutoConfigGlobal(uaParams)
 function uaProcess(uaParams)
 {
 debugger;
-    if ((uaParams.controls.length == 0) && (uaParams.events.length == 0))
+    if ((uaParams.controls.length == 0) /*&& (uaParams.events.length == 0)*/)
     {
         return;
     }
@@ -379,7 +378,7 @@ function getTypeEditorByUaButton(_uaButton, uaParams)
     //find Telerik RadEditor
     //tmp = uaButton.attr("rtf_type")!== undefined ? true : false;
 
-    if (uaParams.config.ConfigurationMode || uaParams.config.GlobalConfigMode)
+    if (uaParams.config.ConfigurationMode)
     {
         result = uaButton.closest(".RadEditor").hasClass("RadEditor") ? "dotnetnuke.radeditorprovider" : "-1";
         //////////////

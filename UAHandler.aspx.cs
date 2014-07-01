@@ -342,8 +342,8 @@ namespace forDNN.Modules.UniversalAutosave
 				case "removeControl":
 					RemoveControl();
 					break;
-                case "addPageToGlobalConfig":
-                    AddPageToGlobalConfig();
+                case "getConfigJson":
+                    GetConfigJson();
                     break;
 				case "updateControlSelector":
 					UpdateControlSelector();
@@ -375,11 +375,11 @@ namespace forDNN.Modules.UniversalAutosave
 			}
 		}
 
-        private void AddPageToGlobalConfig()
+        private void GetConfigJson()
         {
-            int ConfigurationID = Convert.ToInt32(Request.QueryString["configurationID"]);
+            //int ConfigurationID = Convert.ToInt32(Request.QueryString["configurationID"]);
             int TabID = Convert.ToInt32(Request.QueryString["tabID"]);
-            TabsInGlobalConfigurationController.TabsInGlobalConfiguration_Add(ConfigurationID, TabID);
+            //TabsInGlobalConfigurationController.TabsInGlobalConfiguration_Add(ConfigurationID, TabID);
 
 
             UserInfo objUser = UserController.GetCurrentUserInfo();
@@ -391,9 +391,8 @@ namespace forDNN.Modules.UniversalAutosave
 
             if (globalConfiguration != null && objConfig.AutosaveEnabled && CommonController.ConfigAllowed(objUser, objConfig))
             {
-                //objResult.ConfigurationMode = true;
-                //objConfig.GlobalConfigMode = true;
-
+                objConfig.IsGlobalConfig = true;
+                objConfig.TabID = TabID;
 
                 int UserID = objUser.UserID;
                 bool IsAnonymous = (UserID == -1);
@@ -410,20 +409,22 @@ namespace forDNN.Modules.UniversalAutosave
                     }
                 }
 
+
+                //TODO: create a select Controls by TabID
                 //get controls and last values for them
-                List<ControlInfo> lstFullControls = ControlController.Control_GetByFilter(objConfig.ConfigurationID, "");
+                List<ControlInfo> lstFullControls = ControlController.Control_GetByFilter(objConfig.ConfigurationID, "").FindAll(i => i.TabID == objConfig.TabID);
                 foreach (ControlInfo objCtl in lstFullControls)
                 {
                     objCtl.Value =
                         ValueController.Value_GetLastValue(
                             objCtl.ControlID,
-                            (objConfig.UrlIndependent) ? -1 : CommonController.GetCurrentUrlID(),
+                            (objConfig.UrlIndependent) ? -1 : CommonController.GetCurrentUrlID(),  //TODO:   current Url should not be saved, can Referer ?
                             UserID,
                             IsAnonymous);
                 }
 
                 //build json
-                //objConfig.ConfigurationMode = ConfigurationMode;
+                objConfig.ConfigurationMode = false; //the client side need not, for for clarity
                 jsInfo objjsInfo = new jsInfo(ConfigurationController.ConfigurationInfoToLimited(objConfig), lstFullControls);
                 objjsInfo.events = EventController.Event_GetByFilter(objConfig.ConfigurationID, "");
                 objjsInfo.anonymousGUID = (IsAnonymous) ? System.Guid.NewGuid().ToString() : "";
@@ -504,6 +505,8 @@ namespace forDNN.Modules.UniversalAutosave
 		private void AddControl()
 		{
 			int ConfigurationID = Convert.ToInt32(Request.QueryString["configurationID"]);
+            int TabID = Convert.ToInt32(Request.QueryString["tabID"]);
+
 			string Selector = Request.QueryString["selector"];
 			//string objType = Request.QueryString["type"].ToLower();
             //bool IsEvent = ((objType == "a") || (objType == "input[type=\"submit\"]"));
@@ -534,6 +537,7 @@ namespace forDNN.Modules.UniversalAutosave
 				{
 					ControlInfo objControl = new ControlInfo();
 					objControl.ConfigurationID = ConfigurationID;
+                    objControl.TabID = TabID;
 					objControl.Selector = Selector;
 					objControl.Enabled = true;
                     objControl.RTFType = _RTFType;

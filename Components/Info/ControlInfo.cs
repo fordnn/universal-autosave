@@ -10,6 +10,9 @@ namespace forDNN.Modules.UniversalAutosave
 
 		private int _ControlID;
 		private int _ConfigurationID;
+        private int _TabID;
+
+
 		private string _Selector;
 		private bool _Enabled;
 		private string _Value;
@@ -46,6 +49,12 @@ namespace forDNN.Modules.UniversalAutosave
 				_ConfigurationID = value;
 			}
 		}
+
+        public int TabID
+        {
+            get { return _TabID; }
+            set { _TabID = value; }
+        }
 
 		public string Selector
 		{
