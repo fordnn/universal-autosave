@@ -2,3 +2,8 @@ D:\Work\Projects\bin\forDNN.Modules.UniversalAutosave.dll
 D:\Work\Projects\bin\forDNN.Modules.UniversalAutosave.pdb
 D:\Work\Projects\forDNN\UniversalAutosave\obj\Release\forDNN.Modules.UniversalAutosave.dll
 D:\Work\Projects\forDNN\UniversalAutosave\obj\Release\forDNN.Modules.UniversalAutosave.pdb
+C:\Users\Maksim\Documents\Visual Studio 2012\bin\forDNN.Modules.UniversalAutosave.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\bin\forDNN.Modules.UniversalAutosave.pdb
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\obj\Release\UniversalAutosave.csprojResolveAssemblyReference.cache
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\obj\Release\forDNN.Modules.UniversalAutosave.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\obj\Release\forDNN.Modules.UniversalAutosave.pdb

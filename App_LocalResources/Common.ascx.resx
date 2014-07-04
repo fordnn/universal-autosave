@@ -132,6 +132,9 @@
   <data name="DialogTitle.Text" xml:space="preserve">
     <value>History of changes</value>
   </data>
+  <data name="DialogTitleDiff.Text" xml:space="preserve">
+    <value>Difference values</value>
+  </data>
   <data name="EventDoesNotExistsInDB.Text" xml:space="preserve">
     <value>Event does not exist in DB. Nothing to deactivate.</value>
   </data>
@@ -141,8 +144,14 @@
   <data name="HistoryAbsent.Text" xml:space="preserve">
     <value>History of changes is empty yet...</value>
   </data>
+  <data name="NewText.Text" xml:space="preserve">
+    <value>New text</value>
+  </data>
   <data name="NoControlsInDB.Text" xml:space="preserve">
     <value>Controls are absent in DB.</value>
+  </data>
+  <data name="OldText.Text" xml:space="preserve">
+    <value>Old text</value>
   </data>
   <data name="PleaseWait.Text" xml:space="preserve">
     <value>Loading please wait..</value>

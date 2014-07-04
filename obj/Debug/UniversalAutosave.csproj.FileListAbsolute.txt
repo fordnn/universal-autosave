@@ -5,3 +5,21 @@ D:\Work\Projects\forDNN\UniversalAutosave\obj\Debug\forDNN.Modules.UniversalAuto
 D:\Work\Projects\forDNN\UniversalAutosave\bin\Telerik.Web.UI.dll
 D:\Work\Projects\forDNN\UniversalAutosave\bin\DotNetNuke.WebControls.dll
 D:\Work\Projects\forDNN\UniversalAutosave\obj\Debug\UniversalAutosave.csprojResolveAssemblyReference.cache
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\forDNN.Modules.UniversalAutosave.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\forDNN.Modules.UniversalAutosave.pdb
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\DotNetNuke.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\DotNetNuke.WebControls.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\Microsoft.ApplicationBlocks.Data.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\Telerik.Web.UI.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\System.Web.Mvc.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\DotNetNuke.Services.Syndication.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\SharpZipLib.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\DotNetNuke.WebUtility.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\CountryListBox.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\DotNetNuke.Instrumentation.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\DotNetNuke.Web.Client.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\dotnetnuke.log4net.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\bin\ClientDependency.Core.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\obj\Debug\UniversalAutosave.csprojResolveAssemblyReference.cache
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\obj\Debug\forDNN.Modules.UniversalAutosave.dll
+C:\Users\Maksim\Documents\Visual Studio 2012\Projects\universal-autosave\obj\Debug\forDNN.Modules.UniversalAutosave.pdb

@@ -8,6 +8,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Services.Localization;
+using System.Text.RegularExpressions;
+using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
 
 namespace forDNN.Modules.UniversalAutosave
 {
@@ -66,6 +70,9 @@ namespace forDNN.Modules.UniversalAutosave
 				case "closesession":
 					CloseSession(htParams);
 					break;
+                case "getdiff":
+                    GetDiff(htParams);
+                    break;
 			}
 		}
 
@@ -132,31 +139,150 @@ namespace forDNN.Modules.UniversalAutosave
 					objControl.ShowCannedOnly
 			);
 
-			if (lstValues.Count == 0)
+            if  (lstValues.Count == 0)
 			{
 				Response.Write(Localization.GetString("HistoryAbsent", CommonController.GetCommonResourcesPath()));
 				return;
 			}
 
 			string SubDate = "";
-			StringBuilder sb = new StringBuilder("<table class=\"uaHistory\" border=\"0\" width=\"100%\">");
-			foreach (ValueInfo objTemp in lstValues)
+			StringBuilder sb = new StringBuilder();
+            //sb.Append("<a href=\"\" class=\"uaButtonShowDiff\" onclick=\"onClickButtonShowDiff(this, event); return false;\">Show difference</a>");
+            sb.Append("<a href=\"\" class=\"uaButtonShowDiff\">Show difference</a>");
+           
+            sb.Append("<table class=\"uaHistory\" border=\"0\" width=\"100%\">");
+            sb.Append("<tbody>");
+
+            string innerText;
+
+            foreach (ValueInfo objTemp in lstValues)
 			{
-				if (SubDate != objTemp.CreatedAt.ToShortDateString())
-				{
-					SubDate = objTemp.CreatedAt.ToShortDateString();
-					sb.AppendFormat("<tr><td class=\"uaCenter\" colspan=\"2\">{0}</td></tr>", SubDate);
-				}
-                ///TrimHTML(objTemp.Value)
-				sb.AppendFormat("<tr ua=\"{2}\"><td class=\"value\">{0}</td><td>{1}</td></tr>",
-					objTemp.Value,
-					objTemp.CreatedAt.ToShortTimeString(),
-					htParams["selector"]);
+                if (SubDate != objTemp.CreatedAt.ToShortDateString())
+                {
+                    SubDate = objTemp.CreatedAt.ToShortDateString();
+                    sb.AppendFormat("<tr><td class=\"uaCenter\" colspan=\"3\">{0}</td></tr>", SubDate);
+                }
+                if ( ! string.IsNullOrEmpty(objControl.RTFType))
+                {
+                    innerText = Regex.Replace(Regex.Replace(objTemp.Value, @"\s*<\/?[^\>]+\/?>\s*", " "), @"\s\s+", " ");
+                    if (innerText.Length > 200)
+                    {
+                        innerText =
+                            string.Format(
+                            "{0}<a href=\"\" onclick=\"onClickShowAllText(this, event ); return false;\">...</a>"
+                            + "<span class=\"uanextText\" style=\"display:none;\">{1}</span>"
+                            + "<div class=\"fullTextHtml\" style=\"display:none;\">{2}</div>"
+                            , innerText.Substring(0, 200)
+                            , innerText.Substring(200)
+                            , objTemp.Value);
+                    }
+                    else
+                    {
+                        innerText =
+                           string.Format("{0}<div class=\"fullTextHtml\" style=\"display:none;\">{1}</div>"
+                                           , innerText
+                                           , objTemp.Value);
+                    }
+                        
+                    objTemp.Value = innerText;
+                    innerText = string.Empty;
+                }
+
+                    
+                sb.AppendFormat("<tr ua=\"{2}\">" + 
+                    "<td class=\"uaSelectItemHistory\"><input valueid=\"{3}\" type=\"checkbox\" onchange=\"handleDiffCheckbox(this, event);\"/></td>" +
+                    /*"<td class=\"value\" onclick=\"onClickUaRestoreValue(this, event ); return false;\">{0}</td>" +*/
+                    "<td class=\"value\">{0}</td>" +
+                    "<td class=\"timeStamp\">{1}</td>"+
+                    "</tr>",
+                        
+                    objTemp.Value,
+                    objTemp.CreatedAt.ToShortTimeString(),
+                    htParams["selector"],
+                    objTemp.ValueID);
 			}
+            
+            sb.Append("</tbody>");
 			sb.Append("</table>");
 
 			Response.Write(sb.ToString());
 		}
+
+        private void GetDiff(NameValueCollection htParams)
+        {
+            int val1 = int.Parse(htParams["idValue1"]);
+            int val2 = int.Parse(htParams["idValue2"]);
+            List<ValueInfo> values = new List<ValueInfo>(2) { ValueController.Value_GetByPrimaryKey(val1), ValueController.Value_GetByPrimaryKey(val2) };
+
+            ValueInfo valueOld, valueNew;
+            if (values[0].CreatedAt < values[1].CreatedAt)
+            { 
+                valueOld = values[0];
+                valueNew = values[1];
+            }
+            else
+            {
+                valueOld = values[1];
+                valueNew = values[0];  
+            }
+            ISideBySideDiffBuilder diffBuilder;
+            diffBuilder = new SideBySideDiffBuilder(new Differ());
+            var model = diffBuilder.BuildDiffModel(valueOld.Value, valueNew.Value);
+
+            StringBuilder sb = new StringBuilder();
+            
+            sb.AppendLine("<div id=\"diffBox\">"); //main div
+            BuildPaneDiff(sb, model.OldText, "leftPane", Localization.GetString("OldText", LocalResourceFile));
+            BuildPaneDiff(sb, model.NewText, "rightPane", Localization.GetString("NewText", LocalResourceFile));
+            sb.AppendLine("</div>");//main div
+
+            Response.Write(sb.ToString());
+        }
+
+        private void BuildPaneDiff(StringBuilder inputText, DiffPaneModel model, params string[] param)
+        {
+            inputText.AppendLine("<div id=\"" + param[0] + "\">");
+            inputText.AppendLine("<div class=\"diffHeader\">" + param[1] + "</div>");
+            inputText.AppendLine("<div class=\"diffPane\">");
+
+            inputText.AppendLine("<table cellpadding=\"0\" cellspacing=\"0\" class=\"diffTable\">");
+
+            foreach (var diffLine in model.Lines)
+            {
+                inputText.AppendLine("<tr>");
+                inputText.Append("<td class=\"lineNumber\">");
+                inputText.Append(diffLine.Position.HasValue ? diffLine.Position.ToString() : "&nbsp;");
+                inputText.Append("</td>");
+                inputText.Append("<td class=\"line " + diffLine.Type.ToString() + "Line\">");
+                inputText.Append("<span>");
+
+                if (!string.IsNullOrEmpty(diffLine.Text))
+                {
+                    string spaceValue = "\u00B7";
+                    string tabValue = "\u00B7\u00B7";
+                    if (diffLine.Type == ChangeType.Deleted || diffLine.Type == ChangeType.Inserted || diffLine.Type == ChangeType.Unchanged)
+                    {
+                        inputText.Append(Server.HtmlEncode(diffLine.Text).Replace(" ", spaceValue).Replace("\t", tabValue));
+                    }
+                    else if (diffLine.Type == ChangeType.Modified)
+                    {
+                        foreach (var character in diffLine.SubPieces)
+                        {
+                            if (character.Type == ChangeType.Imaginary) continue;
+                            inputText.Append("<span class=\"" + character.Type.ToString() + "Character\">" + Server.HtmlEncode(character.Text.Replace(" ", spaceValue.ToString())) + "</span>");
+                        }
+                    }
+                }
+
+                inputText.Append("</span>");
+                inputText.Append("</td>");
+                inputText.AppendLine("</tr>");
+            }
+
+            inputText.AppendLine("</table>");
+            inputText.AppendLine("</div>"); // diffPane
+            inputText.AppendLine("</div>"); //Pane
+        }
 
 		private void TrackChanges(NameValueCollection htParams)
 		{
