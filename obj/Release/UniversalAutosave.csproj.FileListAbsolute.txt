@@ -2,3 +2,4 @@ D:\Work\Projects\bin\forDNN.Modules.UniversalAutosave.dll
 D:\Work\Projects\bin\forDNN.Modules.UniversalAutosave.pdb
 D:\Work\Projects\forDNN\UniversalAutosave\obj\Release\forDNN.Modules.UniversalAutosave.dll
 D:\Work\Projects\forDNN\UniversalAutosave\obj\Release\forDNN.Modules.UniversalAutosave.pdb
+D:\Work\Projects\forDNN\UniversalAutosave\obj\Release\UniversalAutosave.csprojResolveAssemblyReference.cache

@@ -42,6 +42,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DiffPlex, Version=1.2.0.27529, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\WebSites\dnn629\bin\DiffPlex.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\dotnetnuke.dll</HintPath>

@@ -237,7 +237,7 @@ function uaProcess(uaParams)
 									    $.each(allUaButtons,
 											function (ind, uaButton)
 											{
-											    uaTrackChangesss(uaButton, uaParams/*this*/);
+											    uaTrackChanges(uaButton, uaParams/*this*/);
 											}
 										);
 									},
@@ -265,7 +265,7 @@ function doActionByUaButton(_uaButton, action, value, uaParams)
             }
             if (action == "set_handle")
             {
-                objRadEditor.attachEventHandler("focusout", function (e) { uaTrackChangesss(uaButton, uaParams); });
+                objRadEditor.attachEventHandler("focusout", function (e) { uaTrackChanges(uaButton, uaParams); });
             }
             if (action == "set_focus")
             {
@@ -285,7 +285,7 @@ function doActionByUaButton(_uaButton, action, value, uaParams)
             }
             if (action == "set_handle")
             {
-                objHTMLCtl.blur(function () { uaTrackChangesss(uaButton, uaParams); });
+                objHTMLCtl.blur(function () { uaTrackChanges(uaButton, uaParams); });
             }
             if (action == "set_focus")
             {
@@ -347,7 +347,7 @@ function getTypeEditorByUaButton(_uaButton, uaParams)
 
 }
 
-function uaTrackChangesss(_uaButton, uaParams)
+function uaTrackChanges(_uaButton, uaParams)
 {
     uaButton = $(_uaButton);
     var oldValue = uaButton.attr("uaOldValue");
@@ -417,7 +417,7 @@ function uaWorkClick(uaButton, uaParams)
 	    closeOnEscape: true,
 	    width: "75%",
 	    height: 300,
-	    title: $("#uaPopup span.uaHidden").html(),
+	    title: $("#uaPopup span.uaHidden").html()
 	});
 
     uaGetHistory(uaButton, uaParams);
@@ -427,9 +427,6 @@ function uaWorkClick(uaButton, uaParams)
 
 function uaGetHistory(uaButton, uaParams)
 {
-    $("#uaPopup div").html("");
-    $("#uaPopup span.NormalRed").show();
-
     var objSend = new Object();
     objSend.configurationID = uaParams.config.ConfigurationID;
     objSend.action = "getHistory";
@@ -450,71 +447,29 @@ function uaGetHistory(uaButton, uaParams)
         success: function (msg)
         {
             $("#uaPopup span.NormalRed").hide();
+            $("#uaPopup div").html(msg);
 
-            var table = $(msg);
-            var uaButton = $("[ua=" + $("tr[ua]", table).attr("ua") + "]");
-            var typeEditor = getTypeEditorByUaButton(uaButton, uaParams);
+            var buttons = $("#uaPopup").dialog("option", "buttons");
+            //debugger;
+            //if (buttons.length == 0)
+            //{
+                var objDiff = $("#uaPopup a.uaHidden");
+                $("#uaPopup").dialog("option", "buttons", [{ text: objDiff.html(), click: function () { objDiff.click(); } }]);
+            //}
 
-            if (typeEditor != "")
+            //set handles 
+            $("#uaPopup div a.uaButtonShowDiff").click(function (event)
             {
-                $.each(table.get(0).rows, function (i, v)
-                {
-                    $.each(v.cells, function (_i, c)
-                    {
-                        if ($(c).hasClass("value"))
-                        {
-                            var fullTextHtml = $(c).html();
-                            var fullText = $(c).text().replace(/\s\s+/g, "&nbsp;")
-                            var shortText;
-                            var nextText;
-                            if (fullText.length > 200)
-                            {
-                                shortText = fullText.slice(0, 201);
-                                //onclick=\"$(this).next(\"span.uanextText\").toggle(); return false;\"
-                                shortText += "<a href=\"\">...</a>";
-                                nextText = fullText.slice(201);
-                                nextText = "<span class=\"uanextText\" style=\"display:none;\">" + nextText + "</span>"
-                                $(c).html(shortText + nextText);
-                            }
-                            else
-                            {
-                                $(c).html(fullText);
-                            }
-                            $(c).append("<div class=\"fullTextHtml\" style=\"display:none;\">" + fullTextHtml + "</div>");
-                        }
-                    });
-                });
-                $("#uaPopup div").html(table.get(0).outerHTML);
-            }
-            else
-            {
-                $("#uaPopup div").html(msg);
-            }
-
-            $("#uaPopup div table tr td.value").parent().click(function ()
-            {
-                var restoreValue;
-                if (typeEditor != "")
-                {
-                    restoreValue = $("td.value div.fullTextHtml", $(this)).html();
-                }
-                else
-                {
-                    restoreValue = $("td.value", $(this)).html();
-                }
-                uaRestoreValue(uaButton, restoreValue, uaParams);
-                //uaRestoreValue(this, uaParams); 
-
+                onClickButtonShowDiff(this, event, uaParams);
+                return false;
             });
 
-            if (typeEditor != "")
+            $("#uaPopup div table tr td.value").click(function (event)
             {
-                $("#uaPopup div table tr td.value a").click(function (e)
-                {
-                    $(this).next("span.uanextText").toggle();
-                    return false;
-                });
-            }
+                uaRestoreValue(this, event, uaParams);
+            });
+            //end set handles 
+
         },
         error: function (XMLHttpRequest, textStatus, errorThrown)
         {
@@ -523,8 +478,91 @@ function uaGetHistory(uaButton, uaParams)
     });
 }
 
-function uaRestoreValue(uaButton/*src*/, restoreValue, uaParams)
+function uaShowDiff(warnMessage, path)
 {
+    var checkbox = $("#uaPopup div table input[valueid]:checkbox:checked");
+    if (checkbox.length == 2)
+    {
+        $("#uaDiff").dialog(
+		{
+		    modal: true,
+		    closeOnEscape: true,
+		    width: "90%",
+		    height: 550,
+		    title: $("#uaDiff span.uaHidden").html(),
+		});
+
+        var objSend = new Object();
+        objSend.action = "getDiff";
+        objSend.idValue1 = checkbox.eq(0).attr("valueid");
+        objSend.idValue2 = checkbox.eq(1).attr("valueid");
+        $.ajax({
+            type: "POST",
+            async: true,
+            url: path + "UAHandler.aspx",
+            data: objSend,
+            contentType: "application/json",
+            dataType: "text",
+            success: function (msg)
+            {
+                $("#uaDiff span.NormalRed").hide();
+                $("#uaDiff div").html(msg);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown)
+            {
+                alert(textStatus);
+            }
+        });
+    }
+    else
+    {
+        alert(warnMessage);
+    }
+    return false;
+}
+
+function uaDiffChecked(sender)
+{
+    if ($(sender).attr("checked"))
+    {
+        var lstCB = $("#uaPopup input:checkbox:checked[timeStamp]");
+        if (lstCB.length > 1)
+        {
+            var objMin = null;
+            $.each(lstCB, function (ind, val)
+            {
+                if (objMin == null)
+                {
+                    objMin = val;
+                    return true;
+                }
+                if (parseInt($(objMin).attr("timeStamp")) > parseInt($(val).attr("timeStamp")))
+                {
+                    objMin = val;
+                }
+            }
+            );
+            $(objMin).attr("checked", false).removeAttr("timeStamp");
+        }
+        $(sender).attr("timeStamp", (new Date()).getTime());
+    }
+}
+
+function uaRestoreValue(sender, event, uaParams)
+{
+    var uaButton = $("a[ua=" + $(sender).closest("tr").attr("ua") + "]");
+    var restoreValue;
+    var typeEditor = getTypeEditorByUaButton(uaButton, uaParams);
+
+    if (typeEditor != "")
+    {
+        restoreValue = $("div.fullTextHtml", $(sender)).html();
+    }
+    else
+    {
+        restoreValue = $(sender).html();
+    }
+
     doActionByUaButton(uaButton, "set_value", restoreValue, uaParams);
     doActionByUaButton(uaButton, "set_focus", null, uaParams);
     $("#uaPopup").dialog("close");

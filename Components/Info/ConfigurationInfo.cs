@@ -3,6 +3,7 @@ using System.Data;
 
 namespace forDNN.Modules.UniversalAutosave
 {
+
 	public class ConfigurationInfo : ConfigurationInfoLimited
 	{
 		#region Private Members

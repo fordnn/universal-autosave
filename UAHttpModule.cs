@@ -220,9 +220,11 @@ namespace forDNN.Modules.UniversalAutosave
 											DotNetNuke.Common.Globals.NavigateURL(objConfig.TabID),
 											Localization.GetString("WizardStop", LocalResource),
 											GetWizardHelp(objContext, objjsInfo.path, LocalResource)) :
-										string.Format("<div id=\"uaPopup\" style=\"display:none;\"><span class=\"NormalRed\">{0}</span><span class=\"uaHidden\">{1}</span><div></div></div>",
+										string.Format("<div id=\"uaPopup\" style=\"display:none;\"><span class=\"NormalRed\">{0}</span><span class=\"uaHidden\">{1}</span><div></div></div>" +
+													"<div id=\"uaDiff\" style=\"display:none;\"><span class=\"NormalRed\">{0}</span><span class=\"uaHidden\">{2}</span><div></div></div>",
 											Localization.GetString("PleaseWait", LocalResource),
-											Localization.GetString("DialogTitle", LocalResource))
+											Localization.GetString("DialogTitle", LocalResource),
+											Localization.GetString("DialogTitleDiff", LocalResource))
 								)
 							);
 

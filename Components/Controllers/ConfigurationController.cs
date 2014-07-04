@@ -12,6 +12,23 @@ namespace forDNN.Modules.UniversalAutosave
 {
 	public class ConfigurationController
 	{
+
+		public ConfigurationInfo GlobalConfiguration()
+		{
+			ConfigurationInfo objGlobalConfiguration = new ConfigurationInfo();
+			objGlobalConfiguration.AutosaveEnabled = true;
+			objGlobalConfiguration.AutosaveIcon = true;
+			objGlobalConfiguration.AutosaveLocation = 0;
+			objGlobalConfiguration.AutosaveOnBlur = true;
+			objGlobalConfiguration.AutosavePeriod = 30;
+			objGlobalConfiguration.HistoryExpiry = 0;
+			objGlobalConfiguration.HistoryLength = 0;
+			objGlobalConfiguration.TabID = -1;
+			objGlobalConfiguration.UrlIndependent = true;
+			return objGlobalConfiguration;
+		}
+	
+
 		#region Public Methods
 		
 		public static string KeyFormat = "forDNN_UniversalAutosave_ConfigurationID_{0}";

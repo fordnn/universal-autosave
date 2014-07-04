@@ -126,11 +126,17 @@
   <data name="AreYouSure.Text" xml:space="preserve">
     <value>Are You Sure?</value>
   </data>
+  <data name="CheckTwoValues.Text" xml:space="preserve">
+    <value>Check two values to show difference!</value>
+  </data>
   <data name="ControlDoesNotExistsInDB.Text" xml:space="preserve">
     <value>Control does not exist in DB. Nothing to deactivate.</value>
   </data>
   <data name="DialogTitle.Text" xml:space="preserve">
     <value>History of changes</value>
+  </data>
+  <data name="DialogTitleDiff.Text" xml:space="preserve">
+    <value>Difference viewer</value>
   </data>
   <data name="EventDoesNotExistsInDB.Text" xml:space="preserve">
     <value>Event does not exist in DB. Nothing to deactivate.</value>
@@ -146,6 +152,9 @@
   </data>
   <data name="PleaseWait.Text" xml:space="preserve">
     <value>Loading please wait..</value>
+  </data>
+  <data name="ShowDifference.Text" xml:space="preserve">
+    <value>Show Difference</value>
   </data>
   <data name="ValueDoesNotExistsInDB.Text" xml:space="preserve">
     <value>Value does not exist in DB.</value>
