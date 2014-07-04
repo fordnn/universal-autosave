@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using DiffPlex;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
+using DotNetNuke.Entities.Users;
 
 namespace forDNN.Modules.UniversalAutosave
 {
@@ -341,6 +342,9 @@ namespace forDNN.Modules.UniversalAutosave
 				case "removeControl":
 					RemoveControl();
 					break;
+                case "getConfigJson":
+                    GetConfigJson();
+                    break;
 				case "updateControlSelector":
 					UpdateControlSelector();
 					break;
@@ -370,6 +374,72 @@ namespace forDNN.Modules.UniversalAutosave
 					break;
 			}
 		}
+
+        private void GetConfigJson()
+        {
+            //int ConfigurationID = Convert.ToInt32(Request.QueryString["configurationID"]);
+            int TabID = Convert.ToInt32(Request.QueryString["tabID"]);
+            //TabsInGlobalConfigurationController.TabsInGlobalConfiguration_Add(ConfigurationID, TabID);
+
+
+            UserInfo objUser = UserController.GetCurrentUserInfo();
+            ConfigurationInfo objConfig;
+
+
+            List<ConfigurationInfo> globalConfiguration = ConfigurationController.Configuration_GetByTabID(-1);
+            objConfig = globalConfiguration.Count > 0 ? globalConfiguration[0] : null;
+
+            if (globalConfiguration != null && objConfig.AutosaveEnabled && CommonController.ConfigAllowed(objUser, objConfig))
+            {
+                objConfig.IsGlobalConfig = true;
+                objConfig.TabID = TabID;
+
+                int UserID = objUser.UserID;
+                bool IsAnonymous = (UserID == -1);
+                if (IsAnonymous)
+                {
+                    if (System.Web.HttpContext.Current.Request.Cookies["uaAnonymousGUID"] != null)
+                    {
+                        UserID =
+                            AnonymousController.Anonymous_GetByUserGUIDorCreate(new System.Guid(System.Web.HttpContext.Current.Request.Cookies["uaAnonymousGUID"].Value)).AnonymousID;
+                    }
+                    else
+                    {
+                        UserID = -1;
+                    }
+                }
+
+
+                //TODO: create a select Controls by TabID
+                //get controls and last values for them
+                List<ControlInfo> lstFullControls = ControlController.Control_GetByFilter(objConfig.ConfigurationID, "").FindAll(i => i.TabID == objConfig.TabID);
+                foreach (ControlInfo objCtl in lstFullControls)
+                {
+                    objCtl.Value =
+                        ValueController.Value_GetLastValue(
+                            objCtl.ControlID,
+                            (objConfig.UrlIndependent) ? -1 : CommonController.GetCurrentUrlID(),  //TODO:   current Url should not be saved, can Referer ?
+                            UserID,
+                            IsAnonymous);
+                }
+
+                //build json
+                objConfig.ConfigurationMode = false; //the client side need not, for for clarity
+                jsInfo objjsInfo = new jsInfo(ConfigurationController.ConfigurationInfoToLimited(objConfig), lstFullControls);
+                objjsInfo.events = EventController.Event_GetByFilter(objConfig.ConfigurationID, "");
+                objjsInfo.anonymousGUID = (IsAnonymous) ? System.Guid.NewGuid().ToString() : "";
+                System.Web.Script.Serialization.JavaScriptSerializer objSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                string json = objSerializer.Serialize(objjsInfo);
+
+
+                Response.Clear();
+                Response.ContentType = "application/json; charset=utf-8";
+                Response.Write(json);
+                //Response.End();
+            }
+            else
+                throw new ApplicationException();
+        }
 
 		#region Controls Grid
 
@@ -435,6 +505,8 @@ namespace forDNN.Modules.UniversalAutosave
 		private void AddControl()
 		{
 			int ConfigurationID = Convert.ToInt32(Request.QueryString["configurationID"]);
+            int TabID = Convert.ToInt32(Request.QueryString["tabID"]);
+
 			string Selector = Request.QueryString["selector"];
 			//string objType = Request.QueryString["type"].ToLower();
             //bool IsEvent = ((objType == "a") || (objType == "input[type=\"submit\"]"));
@@ -465,6 +537,7 @@ namespace forDNN.Modules.UniversalAutosave
 				{
 					ControlInfo objControl = new ControlInfo();
 					objControl.ConfigurationID = ConfigurationID;
+                    objControl.TabID = TabID;
 					objControl.Selector = Selector;
 					objControl.Enabled = true;
                     objControl.RTFType = _RTFType;
@@ -479,6 +552,9 @@ namespace forDNN.Modules.UniversalAutosave
 
 			WriteSuccess();
 		}
+
+
+
 
 		private void ChangeControlEnabled()
 		{

@@ -167,16 +167,28 @@ namespace forDNN.Modules.UniversalAutosave
 		}
 
 		public override IDataReader Configuration_GetDistinctValues()
-		{
+		{//todo проверить выборку
 			return (IDataReader)SqlHelper.ExecuteReader(ConnectionString,
 				GetFullyQualifiedName("Configuration_GetDistinctValues"));
 		}
 
 		#endregion
 
-		#region ConfigurationPermission Methods
+        //#region TabsInGlobalConfiguration Methods
 
-		public override int ConfigurationPermission_Add(ConfigurationPermissionInfo objConfigurationPermission)
+        //public override void TabsInGlobalConfiguration_Add(int ConfigurationID, int TabID)
+        //{
+        //    SqlHelper.ExecuteScalar(ConnectionString,
+        //        GetFullyQualifiedName("TabsInGlobalConfiguration_Add"),
+        //        ConfigurationID,
+        //        TabID);            
+        //}
+
+        //#endregion TabsInGlobalConfiguration Methods
+
+        #region ConfigurationPermission Methods
+
+        public override int ConfigurationPermission_Add(ConfigurationPermissionInfo objConfigurationPermission)
 		{
 			int intResID = -1;
 			intResID = Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString,
@@ -236,6 +248,7 @@ namespace forDNN.Modules.UniversalAutosave
 			intResID = Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString,
 				GetFullyQualifiedName("Control_Add"),
 				objControl.ConfigurationID,
+                objControl.TabID,
 				objControl.Selector,
 				objControl.Enabled,
 				objControl.RestoreOnLoad,
@@ -251,6 +264,7 @@ namespace forDNN.Modules.UniversalAutosave
 				GetFullyQualifiedName("Control_Update"),
 				objControl.ControlID,
 				objControl.ConfigurationID,
+                objControl.TabID,
 				objControl.Selector,
 				objControl.Enabled,
 				objControl.RestoreOnLoad,
