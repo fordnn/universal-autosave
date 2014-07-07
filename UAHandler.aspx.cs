@@ -77,27 +77,74 @@ namespace forDNN.Modules.UniversalAutosave
 			}
 		}
 
-		private ValueInfo ParseValue(NameValueCollection htParams, ConfigurationInfo objConfiguration)
+        private ValueInfo ParseValue(NameValueCollection htParams, ConfigurationInfo objConfiguration)
 		{
 			ValueInfo objValue = new ValueInfo();
 
-			string Value = (htParams["value"] == null) ? "" : htParams["value"];
 			string Selector = (htParams["selector"] == null) ? "" : htParams["selector"];
-			string AnonymousGUID = (htParams["anonymousGUID"] == null) ? "" : htParams["anonymousGUID"];
+            
+            List<ControlInfo> lstControls;
 
-			List<ControlInfo> lstControls = ControlController.Control_GetByFilter(objConfiguration.ConfigurationID, Selector);
+            if (objConfiguration.IsGlobalConfig)//
+            {
+                int TabID = htParams["tabID"] == null ? 0 : int.Parse(htParams["tabID"]);
+
+                lstControls = ControlController.Control_GetByFilter(TabID, Selector);
+                if (lstControls.Count == 0 && htParams["action"].ToLower() == "trackchanges")
+                {
+                    string _RTFType = htParams["RTFEditor"] == null ? "" : htParams["RTFEditor"].ToLower();
+
+                    ControlInfo control = new ControlInfo();
+                    control.ConfigurationID = TabID;
+                    control.Enabled = true;
+                    control.RestoreOnLoad = false;
+                    control.RestoreIfEmpty = false;
+                    control.ShowCannedOnly = false;
+                    control.Selector = Selector;
+                    control.RTFType = _RTFType;
+                    control.ControlID = ControlController.Control_Add(control);
+                    lstControls.Add
+                        (
+                        ControlController.Control_GetByPrimaryKey(control.ControlID)
+                        );
+                }
+
+            }//
+            else
+            {
+                lstControls = ControlController.Control_GetByFilter(objConfiguration.ConfigurationID, Selector);
+            }
+
+
+
 			if (lstControls.Count == 0)
 			{
-				Response.Write(Localization.GetString("NoControlsInDB", this.LocalResourceFile));
+                if (objConfiguration.IsGlobalConfig)
+                {
+                    Response.Write(Localization.GetString("HistoryAbsent", CommonController.GetCommonResourcesPath()));
+                }
+                else
+                {
+                    Response.Write(Localization.GetString("NoControlsInDB", this.LocalResourceFile));
+                }
 				return null;
 			}
-			objValue.ControlID = lstControls[0].ControlID;
+			
+            objValue.ControlID = lstControls[0].ControlID;
+			
+            objValue.UrlID = Convert.ToInt32(htParams["urlID"]);
+            objValue.UrlID = objConfiguration.UrlIndependent ? -1 : objValue.UrlID;
 
-			objValue.UrlID = Convert.ToInt32(htParams["urlID"]);
 			objValue.UserID = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo().UserID;
-			if (objValue.UserID == -1)
+            objValue.Canned = false;
+            objValue.Closed = objConfiguration.IsGlobalConfig ? true : false;//
+            objValue.Value = htParams["value"] == null ? "" : htParams["value"]; 			
+            
+            if (objValue.UserID == -1)
 			{
-				objValue.Anonymous = true;
+                objValue.Anonymous = true;
+                string AnonymousGUID = (htParams["anonymousGUID"] == null) ? "" : htParams["anonymousGUID"];
+
 				try
 				{
 					objValue.UserID = AnonymousController.Anonymous_GetByUserGUIDorCreate(new System.Guid(AnonymousGUID)).AnonymousID;
@@ -112,9 +159,7 @@ namespace forDNN.Modules.UniversalAutosave
 			{
 				objValue.Anonymous = false;
 			}
-			objValue.Canned = false;
-			objValue.Closed = false;
-			objValue.Value = Value;
+
 
 			return objValue;
 		}
@@ -125,7 +170,7 @@ namespace forDNN.Modules.UniversalAutosave
 			ConfigurationInfo objConfiguration = ConfigurationController.Configuration_GetByPrimaryKey(ConfigurationID);
 
 			ValueInfo objValue = ParseValue(htParams, objConfiguration);
-			objValue.UrlID = objConfiguration.UrlIndependent ? -1 : objValue.UrlID;
+			//objValue.UrlID = objConfiguration.UrlIndependent ? -1 : objValue.UrlID;
 
 			ControlInfo objControl = ControlController.Control_GetByPrimaryKey(objValue.ControlID);
 
@@ -343,7 +388,7 @@ namespace forDNN.Modules.UniversalAutosave
 					RemoveControl();
 					break;
                 case "getConfigJson":
-                    GetConfigJson();
+                    //GetConfigJson();
                     break;
 				case "updateControlSelector":
 					UpdateControlSelector();
@@ -375,71 +420,72 @@ namespace forDNN.Modules.UniversalAutosave
 			}
 		}
 
-        private void GetConfigJson()
-        {
-            //int ConfigurationID = Convert.ToInt32(Request.QueryString["configurationID"]);
-            int TabID = Convert.ToInt32(Request.QueryString["tabID"]);
-            //TabsInGlobalConfigurationController.TabsInGlobalConfiguration_Add(ConfigurationID, TabID);
+        //private void GetConfigJson()
+        //{
+        //    //int ConfigurationID = Convert.ToInt32(Request.QueryString["configurationID"]);
+        //    int TabID = Convert.ToInt32(Request.QueryString["tabID"]);
+        //    //TabsInGlobalConfigurationController.TabsInGlobalConfiguration_Add(ConfigurationID, TabID);
 
 
-            UserInfo objUser = UserController.GetCurrentUserInfo();
-            ConfigurationInfo objConfig;
+        //    UserInfo objUser = UserController.GetCurrentUserInfo();
+        //    ConfigurationInfo objConfig;
 
 
-            List<ConfigurationInfo> globalConfiguration = ConfigurationController.Configuration_GetByTabID(-1);
-            objConfig = globalConfiguration.Count > 0 ? globalConfiguration[0] : null;
+        //    List<ConfigurationInfo> globalConfiguration = ConfigurationController.Configuration_GetByTabID(-1);
+        //    objConfig = globalConfiguration.Count > 0 ? globalConfiguration[0] : null;
 
-            if (globalConfiguration != null && objConfig.AutosaveEnabled && CommonController.ConfigAllowed(objUser, objConfig))
-            {
-                objConfig.IsGlobalConfig = true;
-                objConfig.TabID = TabID;
+        //    if (globalConfiguration != null && objConfig.AutosaveEnabled && CommonController.ConfigAllowed(objUser, objConfig))
+        //    {
+        //        objConfig.IsGlobalConfig = true;
+        //        objConfig.TabID = TabID;
 
-                int UserID = objUser.UserID;
-                bool IsAnonymous = (UserID == -1);
-                if (IsAnonymous)
-                {
-                    if (System.Web.HttpContext.Current.Request.Cookies["uaAnonymousGUID"] != null)
-                    {
-                        UserID =
-                            AnonymousController.Anonymous_GetByUserGUIDorCreate(new System.Guid(System.Web.HttpContext.Current.Request.Cookies["uaAnonymousGUID"].Value)).AnonymousID;
-                    }
-                    else
-                    {
-                        UserID = -1;
-                    }
-                }
-
-
-                //TODO: create a select Controls by TabID
-                //get controls and last values for them
-                List<ControlInfo> lstFullControls = ControlController.Control_GetByFilter(objConfig.ConfigurationID, "").FindAll(i => i.TabID == objConfig.TabID);
-                foreach (ControlInfo objCtl in lstFullControls)
-                {
-                    objCtl.Value =
-                        ValueController.Value_GetLastValue(
-                            objCtl.ControlID,
-                            (objConfig.UrlIndependent) ? -1 : CommonController.GetCurrentUrlID(),  //TODO:   current Url should not be saved, can Referer ?
-                            UserID,
-                            IsAnonymous);
-                }
-
-                //build json
-                objConfig.ConfigurationMode = false; //the client side need not, for for clarity
-                jsInfo objjsInfo = new jsInfo(ConfigurationController.ConfigurationInfoToLimited(objConfig), lstFullControls);
-                objjsInfo.events = EventController.Event_GetByFilter(objConfig.ConfigurationID, "");
-                objjsInfo.anonymousGUID = (IsAnonymous) ? System.Guid.NewGuid().ToString() : "";
-                System.Web.Script.Serialization.JavaScriptSerializer objSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                string json = objSerializer.Serialize(objjsInfo);
+        //        int UserID = objUser.UserID;
+        //        bool IsAnonymous = (UserID == -1);
+        //        if (IsAnonymous)
+        //        {
+        //            if (System.Web.HttpContext.Current.Request.Cookies["uaAnonymousGUID"] != null)
+        //            {
+        //                UserID =
+        //                    AnonymousController.Anonymous_GetByUserGUIDorCreate(new System.Guid(System.Web.HttpContext.Current.Request.Cookies["uaAnonymousGUID"].Value)).AnonymousID;
+        //            }
+        //            else
+        //            {
+        //                UserID = -1;
+        //            }
+        //        }
 
 
-                Response.Clear();
-                Response.ContentType = "application/json; charset=utf-8";
-                Response.Write(json);
-                //Response.End();
-            }
-            else
-                throw new ApplicationException();
-        }
+        //        //TODO: create a select Controls by TabID
+        //        //get controls and last values for them
+        //        List<ControlInfo> lstFullControls = ControlController.Control_GetByFilter(objConfig.ConfigurationID, "").FindAll(i => i.TabID == objConfig.TabID);
+        //        foreach (ControlInfo objCtl in lstFullControls)
+        //        {
+        //            objCtl.Value =
+        //                ValueController.Value_GetLastValue(
+        //                    objCtl.ControlID,
+        //                    (objConfig.UrlIndependent) ? -1 : CommonController.GetCurrentUrlID(),  //TODO:   current Url should not be saved, can Referer ?
+        //                    UserID,
+        //                    IsAnonymous);
+        //        }
+
+        //        //build json
+        //        objConfig.ConfigurationMode = false; //the client side need not, for for clarity
+        //        jsInfo objjsInfo = new jsInfo(ConfigurationController.ConfigurationInfoToLimited(objConfig), lstFullControls);
+        //        objjsInfo.events = EventController.Event_GetByFilter(objConfig.ConfigurationID, "");
+        //        objjsInfo.anonymousGUID = (IsAnonymous) ? System.Guid.NewGuid().ToString() : "";
+        //        System.Web.Script.Serialization.JavaScriptSerializer objSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+        //        //string json = objSerializer.Serialize(objjsInfo);
+        //        string json = objSerializer.Serialize(lstFullControls);
+
+
+        //        Response.Clear();
+        //        Response.ContentType = "application/json; charset=utf-8";
+        //        Response.Write(json);
+        //        //Response.End();
+        //    }
+        //    else
+        //        throw new ApplicationException();
+        //}
 
 		#region Controls Grid
 
@@ -537,7 +583,6 @@ namespace forDNN.Modules.UniversalAutosave
 				{
 					ControlInfo objControl = new ControlInfo();
 					objControl.ConfigurationID = ConfigurationID;
-                    objControl.TabID = TabID;
 					objControl.Selector = Selector;
 					objControl.Enabled = true;
                     objControl.RTFType = _RTFType;

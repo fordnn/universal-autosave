@@ -93,15 +93,16 @@ namespace forDNN.Modules.UniversalAutosave
             List<ConfigurationInfo> lstConfigurations = ConfigurationController.Configuration_GetByTabID(TabID);
             UserInfo objUser = UserController.GetCurrentUserInfo();
 
-            if (lstConfigurations.Count == 0) //check on global configuration
+            if (lstConfigurations.Count == 0) //try get global configuration
             {
                 List<ConfigurationInfo> globalConfiguration = ConfigurationController.Configuration_GetByTabID(-1);
                 objResult = globalConfiguration.Count > 0 ? globalConfiguration[0] : null;
 
                 if (globalConfiguration != null && objResult.AutosaveEnabled && CommonController.ConfigAllowed(objUser, objResult))
                 {
-                    objResult.ConfigurationMode = true;
-                    objResult.IsGlobalConfig = true;
+                    //objResult.ConfigurationMode = true;
+                    //objResult.IsGlobalConfig = true;
+                    objResult.TabID = TabID * -1;
                 }
             }
             else
@@ -111,17 +112,16 @@ namespace forDNN.Modules.UniversalAutosave
                     if ((CommonController.ConfigAllowed(objUser, objConfig)) && (objConfig.AutosaveEnabled))
                     {
                         objResult = objConfig;
-
                         break;
                     }
                 }
             }
 
-            if (objResult.TabID == -1)
-            {
-                objResult.IsGlobalConfig = true;
-                objResult.TabID = TabID;
-            }
+            //if (objResult.TabID == -1)
+            //{
+            //    objResult.IsGlobalConfig = true;
+            //    objResult.TabID = TabID;
+            //}
 
             return objResult;
         }
@@ -154,25 +154,25 @@ namespace forDNN.Modules.UniversalAutosave
 
         public string GetCookieValueOrDefault(string cookieName)
         {
-           HttpCookie cookie = System.Web.HttpContext.Current.Request.Cookies[cookieName];
-           if(cookie == null)
-           {
-              return "";
-           }  
+            HttpCookie cookie = System.Web.HttpContext.Current.Request.Cookies[cookieName];
+            if (cookie == null)
+            {
+                return "";
+            }
             return cookie.Value;
         }
         public override void Flush()
-		{
-			System.Web.HttpContext objContext = System.Web.HttpContext.Current;
-			byte[] outdata = new byte[1];
+        {
+            System.Web.HttpContext objContext = System.Web.HttpContext.Current;
+            byte[] outdata = new byte[1];
 
-			try
-			{
-				int HeadPosition = _InnerHTML.ToLower().IndexOf("</head>");
-				int BodyPosition = _InnerHTML.ToLower().IndexOf("</body>", HeadPosition);
+            try
+            {
+                int HeadPosition = _InnerHTML.ToLower().IndexOf("</head>");
+                int BodyPosition = _InnerHTML.ToLower().IndexOf("</body>", HeadPosition);
 
-				if ((BodyPosition != -1) && (HeadPosition != -1))
-				{
+                if ((BodyPosition != -1) && (HeadPosition != -1))
+                {
                     bool ConfigurationMode;
 
                     if (GetCookieValueOrDefault("uaWizard") != "")
@@ -184,105 +184,91 @@ namespace forDNN.Modules.UniversalAutosave
                         ConfigurationMode = false;
                     }
 
-					ConfigurationInfo objConfig = null;
+                    ConfigurationInfo objConfig = null;
 
                     if (ConfigurationMode && CommonController.IsAdmin())
-					{
-                        int  ConfigID = int.Parse(GetCookieValueOrDefault("uaWizard"));
-						objConfig = ConfigurationController.Configuration_GetByPrimaryKey(ConfigID);
-                        
+                    {
+                        int ConfigID = int.Parse(GetCookieValueOrDefault("uaWizard"));
+                        objConfig = ConfigurationController.Configuration_GetByPrimaryKey(ConfigID);
+
                         //если, пользователь именил привязку к странице, но не нажал update, а потом нажал на запуск мастера, в таком случае просто редирект на указанную старицу)
                         // or   insurance, not allowed to change the global configuration
                         if (objConfig.TabID.ToString() != objContext.Request.QueryString["TabID"] || objConfig.TabID == -1)
-						{
-							//configuration not for this page
-							objConfig = null;
-						}
-					}
-
-					if (!ConfigurationMode)
-					{
-                        //lets try to check if we have work configuration or globalConfiguration for current TabID
-						objConfig = GetConfiguration(objContext);
-                        
-                        if (objConfig.ConfigurationMode && objConfig.IsGlobalConfig)
                         {
-                            ConfigurationMode = true;
+                            //configuration not for this page
+                            objConfig = null;
                         }
-					}
+                    }
 
-                    if ( objConfig != null )
+                    if (!ConfigurationMode)
+                    {
+                        //lets try to check if we have work configuration or globalConfiguration for current TabID
+                        objConfig = GetConfiguration(objContext);
+
+                        //if (objConfig.ConfigurationMode && objConfig.IsGlobalConfig)
+                        //{
+                        //    ConfigurationMode = true;
+                        //}
+                    }
+
+                    if (objConfig != null)
                     {
 
-						int UserID = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo().UserID;
-						bool IsAnonymous = (UserID == -1);
-						if (IsAnonymous)
-						{
-							if (objContext.Request.Cookies["uaAnonymousGUID"] != null)
-							{
-								UserID =
-								    AnonymousController.Anonymous_GetByUserGUIDorCreate(new System.Guid(objContext.Request.Cookies["uaAnonymousGUID"].Value)).AnonymousID;
-							}
-							else
-							{
-								UserID = -1;
-							}
-						}
-
-						//get controls and last values for them
-                        List<ControlInfo> lstFullControls =  ControlController.Control_GetByFilter(objConfig.ConfigurationID, "");
-                        
-                        if (objConfig.IsGlobalConfig)
+                        int UserID = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo().UserID;
+                        bool IsAnonymous = (UserID == -1);
+                        if (IsAnonymous)
                         {
-                            lstFullControls = lstFullControls.FindAll(i=> i.TabID == objConfig.TabID);
-                        }
-
-						foreach (ControlInfo objCtl in lstFullControls)
-						{
-							objCtl.Value =
-								ValueController.Value_GetLastValue(
-									objCtl.ControlID,
-									(objConfig.UrlIndependent) ? -1 : CommonController.GetCurrentUrlID(),
-									UserID,
-									IsAnonymous);
-						}
-                        
-                        //build json
-                        objConfig.ConfigurationMode = ConfigurationMode; 
-						jsInfo objjsInfo = new jsInfo(ConfigurationController.ConfigurationInfoToLimited(objConfig), lstFullControls);
-						objjsInfo.events = EventController.Event_GetByFilter(objConfig.ConfigurationID, "");
-						objjsInfo.anonymousGUID = (IsAnonymous) ? System.Guid.NewGuid().ToString() : "";
-						System.Web.Script.Serialization.JavaScriptSerializer objSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                        string json = objSerializer.Serialize(objjsInfo);
-                        
-                        string LocalResource = CommonController.GetCommonResourcesPath();
-                        string injectHtml = string.Format("<script type=\"text/javascript\">uaInit({0});</script>", json);
-                        
-                        if (ConfigurationMode == true)
-                        {
-                            if (objConfig.IsGlobalConfig)
+                            if (objContext.Request.Cookies["uaAnonymousGUID"] != null)
                             {
-                                injectHtml = string.Format
-                                    (
-                                    "<div id=\"uaPopup\" style=\"display:none;\"><span class=\"NormalRed\">{0}</span><span class=\"uaHidden\">{1}</span><div></div></div>" +
-                                    "<div id=\"uaDiff\" style=\"display:none;\"><span class=\"NormalRed\">{0}</span><span class=\"uaHidden\">{2}</span><div></div></div>{3}",
-                                    Localization.GetString("PleaseWait", LocalResource),
-                                    Localization.GetString("DialogTitle", LocalResource),
-                                    Localization.GetString("DialogTitleDiff", LocalResource),
-                                    injectHtml
-                                    );
+                                UserID =
+                                    AnonymousController.Anonymous_GetByUserGUIDorCreate(new System.Guid(objContext.Request.Cookies["uaAnonymousGUID"].Value)).AnonymousID;
                             }
                             else
                             {
-                                injectHtml = string.Format
-                                    (
-                                    "<div class=\"uaWizardStop\"><a class=\"dnnPrimaryAction uaWizardButton\" href=\"{0}\" onclick=\"javascript:dnn.dom.setCookie('uaWizard', -1, -1, '/');\">{1}</a></div>{2}{3}",
-                                    DotNetNuke.Common.Globals.NavigateURL(objConfig.TabID),
-                                    Localization.GetString("WizardStop", LocalResource),
-                                    GetWizardHelp(objContext, objjsInfo.path, LocalResource),
-                                    injectHtml
-                                    );
+                                UserID = -1;
                             }
+                        }
+
+                        jsInfo objjsInfo;
+                        if (objConfig.IsGlobalConfig == true)
+                        {
+                            objjsInfo = new jsInfo() { config = ConfigurationController.ConfigurationInfoToLimited(objConfig) };
+                        }
+                        else
+                        {
+                            //get controls and last values for them
+                            List<ControlInfo> lstFullControls = ControlController.Control_GetByFilter(objConfig.ConfigurationID, "");
+                            foreach (ControlInfo objCtl in lstFullControls)
+                            {
+                                objCtl.Value =
+                                    ValueController.Value_GetLastValue(
+                                        objCtl.ControlID,
+                                        (objConfig.UrlIndependent) ? -1 : CommonController.GetCurrentUrlID(),
+                                        UserID,
+                                        IsAnonymous);
+                            }
+                            objConfig.ConfigurationMode = ConfigurationMode;
+                            objjsInfo = new jsInfo(ConfigurationController.ConfigurationInfoToLimited(objConfig), lstFullControls);
+                            objjsInfo.events = EventController.Event_GetByFilter(objConfig.ConfigurationID, "");
+                        }
+                        //build json
+                        objjsInfo.anonymousGUID = (IsAnonymous) ? System.Guid.NewGuid().ToString() : "";
+                        System.Web.Script.Serialization.JavaScriptSerializer objSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                        string json = objSerializer.Serialize(objjsInfo);
+
+                        string LocalResource = CommonController.GetCommonResourcesPath();
+                        string injectHtml = string.Format("<script type=\"text/javascript\">uaInit({0});</script>", json);
+
+                        if (ConfigurationMode == true)
+                        {
+                            injectHtml = string.Format
+                                (
+                                "<div class=\"uaWizardStop\"><a class=\"dnnPrimaryAction uaWizardButton\" href=\"{0}\" onclick=\"javascript:dnn.dom.setCookie('uaWizard', -1, -1, '/');\">{1}</a></div>{2}{3}",
+                                DotNetNuke.Common.Globals.NavigateURL(objConfig.TabID),
+                                Localization.GetString("WizardStop", LocalResource),
+                                GetWizardHelp(objContext, objjsInfo.path, LocalResource),
+                                injectHtml
+                                );
                         }
 
                         if (ConfigurationMode == false)
@@ -300,24 +286,24 @@ namespace forDNN.Modules.UniversalAutosave
 
                         _InnerHTML = _InnerHTML.Insert(BodyPosition, injectHtml);
 
-						_InnerHTML =
-							_InnerHTML.Insert(HeadPosition,
-								string.Format("<script type=\"text/javascript\" src=\"{0}?{1}\"></script>",
-									CommonController.ResolveUrl("js/ua.js", false),
-									DateTime.Now.Ticks));
-					}
-				}
-			}
-			catch (Exception Exc)
-			{
-				DotNetNuke.Services.Exceptions.Exceptions.LogException(Exc);
-			}
+                        _InnerHTML =
+                            _InnerHTML.Insert(HeadPosition,
+                                string.Format("<script type=\"text/javascript\" src=\"{0}?{1}\"></script>",
+                                    CommonController.ResolveUrl("js/ua.js", false),
+                                    DateTime.Now.Ticks));
+                    }
+                }
+            }
+            catch (Exception Exc)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(Exc);
+            }
 
-			outdata = System.Text.Encoding.UTF8.GetBytes(_InnerHTML);
-			_HTML.Write(outdata, 0, outdata.Length);
+            outdata = System.Text.Encoding.UTF8.GetBytes(_InnerHTML);
+            _HTML.Write(outdata, 0, outdata.Length);
 
-			_HTML.Flush();
-		}
+            _HTML.Flush();
+        }
         public override int Read(byte[] buffer, int offset, int count)
         {
             return _HTML.Read(buffer, offset, count);

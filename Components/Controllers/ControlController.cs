@@ -66,12 +66,10 @@ namespace forDNN.Modules.UniversalAutosave
 		{
 			return CBO.FillCollection<ControlInfo>(DataProvider.Instance().Control_GetAllItems(SortBy));
 		}
-
 		public static List<ControlInfo> Control_GetByFilter(int ConfigurationID, string Selector)
 		{
 			return CBO.FillCollection<ControlInfo>(DataProvider.Instance().Control_GetByFilter(ConfigurationID, Selector));
 		}
-
 		public static List<ControlInfo> Control_GetDistinctValues(int ConfigurationID)
 		{
 			return CBO.FillCollection<ControlInfo>(DataProvider.Instance().Control_GetDistinctValues(ConfigurationID));

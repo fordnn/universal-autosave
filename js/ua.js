@@ -7,21 +7,21 @@ function uaInit(uaParams)
 		{
 		debugger;
 
-		    if (uaParams.config.ConfigurationMode)
-		    {
-				if (uaParams.config.IsGlobalConfig)
-				{
-					uaProcessAutoConfigGlobal(uaParams);
-				}
-				else
-				{
-					uaProcessConfig(uaParams);
-				}
-		    }
+		if (uaParams.config.ConfigurationMode)
+		{
+			uaProcessConfig(uaParams);
+		}
+		else
+		{
+			if (uaParams.config.IsGlobalConfig)
+			{
+				uaProcessGlobalConfig(uaParams);
+			}
 			else
-		    		    {
-		        uaProcess(uaParams);
-		    }
+			{
+				uaProcess(uaParams);
+			}
+		}
 		});
 }
 
@@ -41,23 +41,34 @@ function uaGetUniqID(objVal)
 
 function getHtmlElementsToDrawUaButton(uaParams)
 {
-    var lstResultControls;
+    var lstResultControls = $();
 
     //standard HTML form input control (+  a,input[type="submit"] for events close session)
 	var lstControlsStandard;
 	
 	if (uaParams.config.IsGlobalConfig)
-    lstControlsStandard = $("textarea:visible");
+    lstControlsStandard =   $("textarea:visible");
 	else
 	lstControlsStandard = $("input[type=\"text\"],input[type=\"radio\"],input[type=\"checkbox\"],textarea,select,a,input[type=\"submit\"]");
     
 	
 	//Telerik RadEditor
     var lstControlsRadEditor = $(".reContentCell", ".RadEditor");
+	
+	
+	//FCKeditor 
+	// debugger;
+	// var lstControlsFckEditor = $();
+	// if (typeof(FCKeditorAPI) !== "undefined")
+    // {
+		// $.each(FCKeditorAPI.Instances, function (index, item)
+		// {
+			// lstControlsFckEditor = $(lstControlsFckEditor).add($("#"+item.Name));
+		// })
+	// }
+	// others...
 
-    // others...
-
-    lstResultControls = $(lstControlsStandard).add(lstControlsRadEditor);/*.add(others)*/
+    lstResultControls = $(lstControlsStandard).add(lstControlsRadEditor);//.add(lstControlsFckEditor);/*.add(others)*/
     return lstResultControls;
 }
 
@@ -163,7 +174,7 @@ function uaConfigClick(uaButton, uaParams)
     return false;
 }
 
-function uaProcessAutoConfigGlobal(uaParams)
+function uaProcessGlobalConfig(uaParams)
 {
 	var lstControls = getHtmlElementsToDrawUaButton(uaParams);
 
@@ -171,50 +182,72 @@ function uaProcessAutoConfigGlobal(uaParams)
     {
         return;
     }
-	//$("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + uaParams.path + "ua.css\">").appendTo("head");
+	$("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + uaParams.path + "ua.css\">").appendTo("head");
+	var anon = dnn.dom.getCookie(uaAnonymousGUID);
+	if ((uaParams.anonymousGUID != "") && (anon == null))
+	{
+		dnn.dom.setCookie(uaAnonymousGUID, uaParams.anonymousGUID, 365, "/");
+	}
 	
     $.each(lstControls,
-		function (ind, val)
+		function (ind, value)
 		{
-		    var objVal = $(val);
-
-		    var uniqID = uaGetUniqID(objVal);
+		debugger;
+		    val = $(value);
+		    var uniqID = uaGetUniqID(val);
 		    if (uniqID == "")
 		    {
 		        return;
 		    }
-
-		    var className = "uaConfig";
-		    objVal.after("<div class=\"uaButton\"><a href=\"#\" class=\"" + className + "\" ua=\"" + uniqID + "\"></a></div>");
-			var uaButton = $("a[ua=" + uniqID + "]")
-
-			uaConfigClick(uaButton, uaParams)//emulation  ConfigClick
-
-			uaButton.closest("div.uaButton").remove();
+			
+			var uaParamsControl = Object();
+			uaParamsControl.Enabled = true;
+			// uaParamsControl.RestoreOnLoad = true;
+			// uaParamsControl.RestoreIfEmpty = true;
+			// uaParamsControl.ShowCannedOnly = false;
+			
+			if ( uaParamsControl.Enabled == true)
+			{
+				var attrClassValue = (uaParams.config.AutosaveIcon) ? "uaWork" : "uaWork uaHidden";
+				var attrUaValue = uniqID;// = val.Selector;
+				
+				val.after("<div class=\"uaButton\"><a href=\"#\" class=\"" + attrClassValue + "\" ua=\"" + attrUaValue + "\" " /*+ attrRTFType*/ + "></a></div>");
+				
+				var uaButton = $("a[ua=\"" + attrUaValue + "\"]");
+				
+				var attrRTFType = getTypeEditorByUaButton(uaButton, uaParams);
+				
+				if (attrRTFType != "")
+				{
+					uaButton.attr("rtf_type", attrRTFType)
+				}
+				
+				///
+				debugger;
+				var value = doActionByUaButton(uaButton, "get_value", null, uaParams);
+				uaButton.attr("uaOldValue", value)
+				///
+				
+				
+		        // if (uaParamsControl.RestoreOnLoad)
+		        // {
+		            // if (uaParamsControl.RestoreIfEmpty)
+		            // {
+		                // if (value == "")
+		                // {
+		                    // doActionByUaButton(uaButton, "set_value", val.Value, uaParams);
+		                // }
+		            // }
+		            // else
+		            // {
+		                // doActionByUaButton(uaButton, "set_value", val.Value, uaParams);
+		            // }
+		        // }
+			}
 		}
 	);
-
-	debugger;    
-
-	$.get(
-		uaParams.path + "UAHandler.aspx",
-		{ configurationID: uaParams.config.ConfigurationID, tabID : uaParams.config.TabID, action: "getConfigJson"},
-		function (data)
-		{
-		    if (true/*data == "1"*/) // TODO
-		    {
-			debugger;
-				uaProcess(data)
-		    }
-		    else
-		    {
-		        alert(data);
-		    }
-		}
-	);	
 	
-	//location.reload();
-	
+uaSetHandlers(uaParams);	
 }
 
 function uaProcess(uaParams)
@@ -254,13 +287,13 @@ debugger;
 		        objVal.after("<div class=\"uaButton\"><a href=\"#\" class=\"" + attrClassValue + "\" ua=\"" + attrUaValue + "\" " + attrRTFType + "></a></div>");
 		        var uaButton = $("a[ua=\"" + val.Selector + "\"]");
 
-		        //TODO
+				var value = doActionByUaButton(uaButton, "get_value", null, uaParams);
+		        uaButton.attr("uaOldValue", value) //add and set attr uaOldValue
+		        
+				//TODO
 		        //restore values
 		        if (val.RestoreOnLoad)
 		        {
-		            var value = doActionByUaButton(uaButton, "get_value", null, uaParams);
-		            uaButton.attr("uaOldValue", value) //add and set attr uaOldValue
-
 		            if (val.RestoreIfEmpty)
 		            {
 		                if (value == "")
@@ -276,8 +309,11 @@ debugger;
 		    }
 		}
 	);
+uaSetHandlers(uaParams);	
+}
 
-
+function uaSetHandlers(uaParams)
+{
     var allUaButtons = $("a[ua]");
 
     if (allUaButtons.length > 0)
@@ -296,20 +332,20 @@ debugger;
         }
 
         //Autosave interval handler
-        if (uaParams.config.AutosavePeriod != 0)
-        {
-            uaParams.intervalID = setInterval(
-									function ()
-									{
-									    $.each(allUaButtons,
-											function (ind, uaButton)
-											{
-											    uaTrackChangesss(uaButton, uaParams);
-											}
-										);
-									},
-									uaParams.config.AutosavePeriod * 1000);
-        }
+        // if (uaParams.config.AutosavePeriod != 0)
+        // {
+            // uaParams.intervalID = setInterval(
+									// function ()
+									// {
+									    // $.each(allUaButtons,
+											// function (ind, uaButton)
+											// {
+											    // uaTrackChanges(uaButton, uaParams);
+											// }
+										// );
+									// },
+									// uaParams.config.AutosavePeriod * 1000);
+        // }
     }
 }
 
@@ -332,7 +368,7 @@ function doActionByUaButton(_uaButton, action, value, uaParams)
             }
             if (action == "set_handle")
             {
-                objRadEditor.attachEventHandler("focusout", function (e) { uaTrackChangesss(uaButton, uaParams); });
+                objRadEditor.attachEventHandler("focusout", function (e) { uaTrackChanges(uaButton, uaParams); });
             }
             if (action == "set_focus")
             {
@@ -352,7 +388,7 @@ function doActionByUaButton(_uaButton, action, value, uaParams)
             }
             if (action == "set_handle")
             {
-                objHTMLCtl.blur(function () { uaTrackChangesss(uaButton, uaParams); });
+                objHTMLCtl.blur(function () { uaTrackChanges(uaButton, uaParams); });
             }
             if (action == "set_focus")
             {
@@ -375,14 +411,25 @@ function getTypeEditorByUaButton(_uaButton, uaParams)
     var result;
     //var tmp;
 
-    //find Telerik RadEditor
+  
     //tmp = uaButton.attr("rtf_type")!== undefined ? true : false;
 
-    if (uaParams.config.ConfigurationMode)
+    if (uaParams.config.ConfigurationMode || uaParams.config.IsGlobalConfig)
     {
+		 //find Telerik RadEditor
         result = uaButton.closest(".RadEditor").hasClass("RadEditor") ? "dotnetnuke.radeditorprovider" : "-1";
-        //////////////
-        //find others...
+        debugger;
+        
+		//find fckeditor
+		// if (result == -1)
+		// {
+			// if (typeof(FCKeditorAPI) !== "undefined")
+			// {
+				// result = FCKeditorAPI.GetInstance(uaButton.attr("ua")) !== undefined ? "fckhtmleditorprovider" : "-1";
+			// }
+		// }
+		
+		//find others...
         /////////////
     }
     else
@@ -396,6 +443,7 @@ function getTypeEditorByUaButton(_uaButton, uaParams)
             result = "-1";
         }
     }
+	
     if (result == "-1") //standard HTML control
     {
         return "";
@@ -414,8 +462,9 @@ function getTypeEditorByUaButton(_uaButton, uaParams)
 
 }
 
-function uaTrackChangesss(_uaButton, uaParams)
+function uaTrackChanges(_uaButton, uaParams)
 {
+	debugger;
     uaButton = $(_uaButton);
     var oldValue = uaButton.attr("uaOldValue");
     var newValue = doActionByUaButton(uaButton, "get_value", null, uaParams);
@@ -442,8 +491,11 @@ function uaTrackChangesss(_uaButton, uaParams)
     if (isModified)
     {
         uaButton.addClass("uaProgress");
+
         var objSend = new Object();
-        objSend.configurationID = uaParams.config.ConfigurationID;
+		objSend.RTFEditor = uaButton.attr("rtf_type") === undefined ? "" : uaButton.attr("rtf_type");
+		objSend.configurationID = uaParams.config.ConfigurationID;
+		objSend.tabID = uaParams.config.TabID;
         objSend.action = "trackChanges";
         objSend.value = newValue;
         objSend.selector = uaButton.attr("ua");
@@ -463,6 +515,8 @@ function uaTrackChangesss(_uaButton, uaParams)
                 {
                     alert(msg);
                 }
+				uaButton.attr("uaOldValue", newValue);
+				uaButton.removeClass("uaProgress");
             },
             error: function (XMLHttpRequest, textStatus, errorThrown)
             {
@@ -470,9 +524,8 @@ function uaTrackChangesss(_uaButton, uaParams)
             }
         });
 
-        uaButton.attr("uaOldValue", newValue);
-
-        uaButton.removeClass("uaProgress");
+        //uaButton.attr("uaOldValue", newValue);
+        //uaButton.removeClass("uaProgress");
     }
 }
 
@@ -508,7 +561,7 @@ function uaGetHistory(uaButton, uaParams)
     objSend.configurationID = uaParams.config.ConfigurationID;
     objSend.action = "getHistory";
 
-    //objSend.selector = uaGetUniqID($($(src).attr("ua")));
+    objSend.tabID = uaParams.config.TabID;
     objSend.selector = $(uaButton).attr("ua");
 
     objSend.anonymousGUID = dnn.dom.getCookie(uaAnonymousGUID);

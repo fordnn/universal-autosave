@@ -126,7 +126,6 @@ namespace forDNN.Modules.UniversalAutosave
 		private bool _UrlIndependent;
 		private bool _ConfigurationMode;
         private int _TabID;
-        private bool _IsGlobalConfig;
 
 		#endregion
 
@@ -146,7 +145,6 @@ namespace forDNN.Modules.UniversalAutosave
 			this.UrlIndependent = objConfiguration.UrlIndependent;
 			this.ConfigurationMode = objConfiguration.ConfigurationMode;
             this.TabID = objConfiguration.TabID;
-            this.IsGlobalConfig = objConfiguration.IsGlobalConfig;
 		}
 
 		#endregion
@@ -245,8 +243,7 @@ namespace forDNN.Modules.UniversalAutosave
 
         public bool IsGlobalConfig
         {
-            get { return _IsGlobalConfig; }
-            set { _IsGlobalConfig = value; }
+            get { return _TabID < 0; }
         }
 		#endregion
 	}
