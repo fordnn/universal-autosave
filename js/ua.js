@@ -6,7 +6,6 @@ function uaInit(uaParams)
 		function ()
 		{
 		debugger;
-
 		if (uaParams.config.ConfigurationMode)
 		{
 			uaProcessConfig(uaParams);
@@ -54,21 +53,23 @@ function getHtmlElementsToDrawUaButton(uaParams)
 	
 	//Telerik RadEditor
     var lstControlsRadEditor = $(".reContentCell", ".RadEditor");
+	lstControlsRadEditor.data("RTFEditor", "dotnetnuke.radeditorprovider");
 	
 	
 	//FCKeditor 
-	// debugger;
-	// var lstControlsFckEditor = $();
-	// if (typeof(FCKeditorAPI) !== "undefined")
-    // {
-		// $.each(FCKeditorAPI.Instances, function (index, item)
-		// {
-			// lstControlsFckEditor = $(lstControlsFckEditor).add($("#"+item.Name));
-		// })
-	// }
+	debugger;
+	var lstControlsFckEditor = $();
+	if (typeof(FCKeditorAPI) !== "undefined")
+    {
+		$.each(FCKeditorAPI.Instances, function (index, item)
+		{
+			lstControlsFckEditor = $(lstControlsFckEditor).add($("#"+item.Name));
+		})
+		lstControlsFckEditor.data("RTFEditor", "ckhtmleditorprovider");
+	}
 	// others...
 
-    lstResultControls = $(lstControlsStandard).add(lstControlsRadEditor);//.add(lstControlsFckEditor);/*.add(others)*/
+    lstResultControls = $(lstControlsStandard).add(lstControlsRadEditor).add(lstControlsFckEditor);/*.add(others)*/
     return lstResultControls;
 }
 
@@ -101,9 +102,6 @@ function uaProcessConfig(uaParams)
 		    }
 
 		    var className = (uaParams.config.AutosaveIcon) ? "uaConfig" : "uaConfig uaHidden";
-
-		    //var objType = objVal[0].nodeName + ((objVal.attr("type") == null) ? "" : ("[" + objVal.attr("type") + "]"));
-		    //var isEvent = (objType.toLowerCase() == "a") || (objType.toLowerCase() == "input[type=\"submit\"]");
 		    var isAncor = $(objVal).prop("nodeName").toLowerCase() == "a";
 		    var isSubmit = (objVal.attr("type") !== undefined) && (objVal.attr("type").toLowerCase() == "input[type=\"submit\"]") ? true : false
 		    var isEvent = isAncor || isSubmit;
@@ -129,8 +127,14 @@ function uaProcessConfig(uaParams)
 		                className = "uaConfigSelected";
 		            }
 		        });
-		        //   NOT ! insert attribute rtf_type
-		        objVal.after("<div class=\"uaButton\"><a href=\"#\" class=\"" + className + "\" ua=\"" + uniqID + "\"></a></div>");
+			
+				//  insert attribute rtf_type
+				var RTFEditor = objVal.data("RTFEditor");
+				if (RTFEditor !== undefined)
+				{
+				debugger;
+		        objVal.after("<div class=\"uaButton\"><a href=\"#\" class=\"" + className + "\" ua=\"" + uniqID + "\" rtf_type=\"" + RTFEditor + "\"></a></div>");
+				}
 		    }
 		}
 	);
@@ -146,7 +150,11 @@ function uaConfigClick(uaButton, uaParams)
     var isEvent = objThis.attr("ua_isevent") !== undefined ? true : false
     objThis.addClass("uaProgress");
 
-    var typeRTFEditor = getTypeEditorByUaButton(uaButton, uaParams);
+	debugger;
+    var typeRTFEditor = getTypeEditorByUaButton(uaButton);
+	
+	//var typeRTFEditor = objThis.attr("rtf_type") !== undefined ? objThis.attr("rtf_type") : "";
+	return;
 
     $.get(
 		uaParams.path + "UAHandler.aspx",
@@ -190,10 +198,10 @@ function uaProcessGlobalConfig(uaParams)
 	}
 	
     $.each(lstControls,
-		function (ind, value)
+		function (ind, item)
 		{
-		debugger;
-		    val = $(value);
+			debugger;
+		    val = $(item);
 		    var uniqID = uaGetUniqID(val);
 		    if (uniqID == "")
 		    {
@@ -214,41 +222,41 @@ function uaProcessGlobalConfig(uaParams)
 				val.after("<div class=\"uaButton\"><a href=\"#\" class=\"" + attrClassValue + "\" ua=\"" + attrUaValue + "\" " /*+ attrRTFType*/ + "></a></div>");
 				
 				var uaButton = $("a[ua=\"" + attrUaValue + "\"]");
-				
-				var attrRTFType = getTypeEditorByUaButton(uaButton, uaParams);
-				
-				if (attrRTFType != "")
+
+				//  insert attribute rtf_type
+				var RTFEditor = val.data("RTFEditor");
+				if (RTFEditor !== undefined)
 				{
-					uaButton.attr("rtf_type", attrRTFType)
+					debugger;
+					uaButton.attr("rtf_type", RTFEditor)
 				}
-				
+					
 				///
-				debugger;
 				var value = doActionByUaButton(uaButton, "get_value", null, uaParams);
 				uaButton.attr("uaOldValue", value)
 				///
 				
 				
-		        // if (uaParamsControl.RestoreOnLoad)
-		        // {
-		            // if (uaParamsControl.RestoreIfEmpty)
-		            // {
-		                // if (value == "")
-		                // {
-		                    // doActionByUaButton(uaButton, "set_value", val.Value, uaParams);
-		                // }
-		            // }
-		            // else
-		            // {
-		                // doActionByUaButton(uaButton, "set_value", val.Value, uaParams);
-		            // }
-		        // }
+				// if (uaParamsControl.RestoreOnLoad)
+				// {
+					// if (uaParamsControl.RestoreIfEmpty)
+					// {
+						// if (value == "")
+						// {
+							// doActionByUaButton(uaButton, "set_value", val.Value, uaParams);
+						// }
+					// }
+					// else
+					// {
+						// doActionByUaButton(uaButton, "set_value", val.Value, uaParams);
+					// }
+				// }
 			}
-		}
-	);
+		});
 	
 uaSetHandlers(uaParams);	
 }
+
 
 function uaProcess(uaParams)
 {
@@ -353,58 +361,68 @@ function doActionByUaButton(_uaButton, action, value, uaParams)
 {
     //action in (get_value, set_value, set_handle, set_focus)
     var uaButton = $(_uaButton);
-
-    switch (getTypeEditorByUaButton(uaButton, uaParams))
-    {
+	debugger;
+	var obj;
+    switch (getTypeEditorByUaButton(uaButton))
+	{
         case "dotnetnuke.radeditorprovider":
-            var objRadEditor = $find(uaButton.closest(".RadEditor").attr("id"));
-            if (action == "get_value")
-            {
-                return objRadEditor.get_html();
-            }
-            if (action == "set_value")
-            {
-                objRadEditor.set_html(value);
-            }
-            if (action == "set_handle")
-            {
-                objRadEditor.attachEventHandler("focusout", function (e) { uaTrackChanges(uaButton, uaParams); });
-            }
-            if (action == "set_focus")
-            {
-                objRadEditor.setFocus();
-            }
-            break
-
+			var obj = $find(uaButton.closest(".RadEditor").attr("id"));
+			switch (action)
+			{
+				case "get_value":
+					return obj.get_html(); break;
+				case "set_value":
+					obj.set_html(value); break;
+				case "set_handle":
+					obj.attachEventHandler("focusout", function (e) { uaTrackChanges(uaButton, uaParams); }); break;
+				case "set_focus":
+					obj.setFocus(); break;
+			}
+			break;
+        case "ckhtmleditorprovider":
+			obj = FCKeditorAPI.GetInstance(uaButton.attr("ua").slice(1));//skip "#"
+			switch (action)
+			{
+				case "get_value":
+					debugger;
+					return obj.GetHTML() == null ? "" : obj.GetHTML(); break;
+				case "set_value":
+					obj.SetHTML(value); break;
+				case "set_handle":
+					obj.Events.AttachEvent('OnBlur', function (e) { uaTrackChanges(uaButton, uaParams); }); break;
+				case "set_focus":
+					obj.Focus(); break;
+			}			
+			break;
         case "":
-            var objHTMLCtl = $(uaButton.attr("ua"));
-            if (action == "get_value")
-            {
-                return objHTMLCtl.val();
-            }
-            if (action == "set_value")
-            {
-                objHTMLCtl.val(value);
-            }
-            if (action == "set_handle")
-            {
-                objHTMLCtl.blur(function () { uaTrackChanges(uaButton, uaParams); });
-            }
-            if (action == "set_focus")
-            {
-                objHTMLCtl.focus();
-            }
-
-            break
-
+			obj = $(uaButton.attr("ua"));
+			switch (action)
+			{
+				case "get_value":
+					return obj.val(); break;
+				case "set_value":
+					obj.val(value); break;
+				case "set_handle":
+					obj.blur(function () { uaTrackChanges(uaButton, uaParams); }); break;
+				case "set_focus":
+					obj.focus(); break;
+			}
+			break;			
         default:
             //statements_def
-            break
+            break;
     }
 
 }
 
-function getTypeEditorByUaButton(_uaButton, uaParams)
+function getTypeEditorByUaButton(uaButton)
+{
+uaButton = $(uaButton);
+var typeRTFEditor = uaButton.attr("rtf_type") !== undefined ? uaButton.attr("rtf_type") : "";
+return typeRTFEditor;
+}
+
+/*function getTypeEditorByUaButton_del(_uaButton, uaParams)
 {
     //if return "" then standard HTML control
     var uaButton = $(_uaButton);
@@ -460,7 +478,7 @@ function getTypeEditorByUaButton(_uaButton, uaParams)
     // result = "";
     // }
 
-}
+}*/
 
 function uaTrackChanges(_uaButton, uaParams)
 {
@@ -493,7 +511,10 @@ function uaTrackChanges(_uaButton, uaParams)
         uaButton.addClass("uaProgress");
 
         var objSend = new Object();
-		objSend.RTFEditor = uaButton.attr("rtf_type") === undefined ? "" : uaButton.attr("rtf_type");
+		
+		//objSend.RTFEditor = uaButton.attr("rtf_type") === undefined ? "" : uaButton.attr("rtf_type");
+		objSend.RTFEditor = getTypeEditorByUaButton(uaButton);
+		
 		objSend.configurationID = uaParams.config.ConfigurationID;
 		objSend.tabID = uaParams.config.TabID;
         objSend.action = "trackChanges";
@@ -688,9 +709,12 @@ function uaRestoreValue(sender, event, uaParams)
 	debugger;	
 	var uaButton = $("a[ua=" + $(sender).closest("tr").attr("ua") + "]");
 	var restoreValue;
-	var typeEditor = getTypeEditorByUaButton(uaButton, uaParams);
 	
-	if (typeEditor != "")
+	
+	var typeRTFEditor = getTypeEditorByUaButton(uaButton);
+	
+	
+	if (typeRTFEditor != "")
 	{
 		restoreValue = $("div.fullTextHtml", $(sender)).html();
 	}
